@@ -3,23 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>18 Weeks</title>
+<title>Summer Training Cards</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0a0a0f;--card:#12121a;--card2:#1a1a26;--card3:#1f1f2e;
-  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
-  --text:#f0eee8;--text2:#8a8799;--text3:#4a4860;
-  --recovery:#7eb8a4;--base:#e8a44a;--build:#e05a2b;--taper:#7b9fd4;
-  --run:#5a9e7a;--long:#c45f3a;--quality:#d4a843;--strength:#7b8fd4;--race:#e03060;
-  --green:#4caf7d;--green-dim:rgba(76,175,125,0.15);
+  --bg:#f0ece3;--card:#faf7f2;--card2:#ede8df;--card3:#e6e0d5;
+  --border:rgba(80,60,30,0.10);--border2:rgba(80,60,30,0.18);
+  --text:#2c2416;--text2:#7a6a52;--text3:#b0a08a;
+  --recovery:#3d7a5c;--base:#c47c20;--build:#a84a1e;--taper:#4a6e7a;
+  --run:#3d7a5c;--long:#a84a1e;--quality:#c47c20;--strength:#4a6e7a;--race:#8b1a2e;
+  --green:#3d7a5c;--green-dim:rgba(61,122,92,0.12);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden;user-select:none;}
-.bg-glow{position:fixed;width:600px;height:600px;border-radius:50%;filter:blur(130px);opacity:0.06;pointer-events:none;transition:background 0.7s;top:-150px;left:50%;transform:translateX(-50%);z-index:0;}
+.bg-etching{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;color:#5a3e1a;}
+.bg-glow{position:fixed;width:600px;height:600px;border-radius:50%;filter:blur(130px);opacity:0.18;pointer-events:none;transition:background 0.7s;top:-150px;left:50%;transform:translateX(-50%);z-index:0;}
 
 /* ── MENU BAR ── */
-.menubar{position:fixed;top:0;left:0;right:0;height:50px;background:rgba(10,10,15,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 12px;gap:2px;z-index:100;}
+.menubar{position:fixed;top:0;left:0;right:0;height:50px;background:rgba(240,236,227,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 12px;gap:2px;z-index:100;}
 .menubar-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.06em;color:var(--text);opacity:0.5;margin-right:10px;flex-shrink:0;}
 .menubar-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text2);padding:5px 10px;border-radius:6px;border:none;background:transparent;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .menubar-btn:hover{background:var(--card2);color:var(--text);}
@@ -35,38 +36,38 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 
 /* ── DECK ── */
 .deck{position:relative;width:100%;max-width:420px;flex:1;min-height:0;}
-.card{position:absolute;inset:0;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px 20px 16px;display:flex;flex-direction:column;opacity:0;pointer-events:none;transform:translateX(60px) scale(0.96);transition:transform 0.38s cubic-bezier(0.4,0,0.2,1),opacity 0.38s cubic-bezier(0.4,0,0.2,1);overflow:hidden;}
+.card{position:absolute;inset:0;background:var(--card);border:1px solid var(--border);box-shadow:0 2px 16px rgba(60,40,10,0.07),0 1px 4px rgba(60,40,10,0.05);border-radius:20px;padding:20px 20px 16px;display:flex;flex-direction:column;opacity:0;pointer-events:none;transform:translateX(60px) scale(0.96);transition:transform 0.38s cubic-bezier(0.4,0,0.2,1),opacity 0.38s cubic-bezier(0.4,0,0.2,1);overflow:hidden;}
 .card.active{opacity:1;pointer-events:all;transform:translateX(0) scale(1);}
 .card.exit-left{opacity:0;pointer-events:none;transform:translateX(-80px) scale(0.94);}
 .card.exit-right{opacity:0;pointer-events:none;transform:translateX(80px) scale(0.94);}
 .card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
 .week-num{font-family:'Bebas Neue',sans-serif;font-size:66px;line-height:1;color:var(--text);opacity:0.12;position:absolute;right:16px;top:12px;}
 .phase-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-weight:500;}
-.tag-recovery{background:rgba(126,184,164,0.15);color:var(--recovery);}
-.tag-base{background:rgba(232,164,74,0.15);color:var(--base);}
-.tag-build{background:rgba(224,90,43,0.15);color:var(--build);}
-.tag-taper{background:rgba(123,159,212,0.15);color:var(--taper);}
+.tag-recovery{background:rgba(61,122,92,0.12);color:var(--recovery);}
+.tag-base{background:rgba(196,124,32,0.12);color:var(--base);}
+.tag-build{background:rgba(168,74,30,0.12);color:var(--build);}
+.tag-taper{background:rgba(74,110,122,0.12);color:var(--taper);}
 .special-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;}
-.tag-cutback{background:rgba(123,143,212,0.15);color:var(--strength);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
-.tag-peak{background:rgba(224,90,43,0.2);color:var(--build);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
-.tag-race-wk{background:rgba(224,48,96,0.2);color:var(--race);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
+.tag-cutback{background:rgba(74,110,122,0.12);color:var(--strength);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
+.tag-peak{background:rgba(168,74,30,0.14);color:var(--build);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
+.tag-race-wk{background:rgba(139,26,46,0.14);color:var(--race);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
 .week-date-line{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.07em;margin-bottom:10px;}
 .volume-section{margin-bottom:12px;}
 .volume-row{display:flex;align-items:baseline;gap:8px;margin-bottom:6px;}
 .volume-num{font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;letter-spacing:0.02em;}
 .volume-unit{font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);letter-spacing:0.06em;}
 .volume-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-left:auto;align-self:center;}
-.vol-bar-track{width:100%;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;}
+.vol-bar-track{width:100%;height:4px;background:rgba(80,60,30,0.07);border-radius:2px;overflow:hidden;}
 .vol-bar-fill{height:100%;border-radius:2px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1);}
 .divider{border:none;border-top:1px solid var(--border);margin:10px 0;}
 .sessions-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
 .sessions-list{display:flex;flex-direction:column;gap:5px;flex:1;overflow:hidden;}
-.session-row{display:flex;align-items:center;gap:8px;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid var(--border);cursor:pointer;transition:background 0.15s,border-color 0.15s,transform 0.1s;position:relative;}
+.session-row{display:flex;align-items:center;gap:8px;padding:7px 10px;background:rgba(80,60,30,0.04);border-radius:10px;border:1px solid var(--border);cursor:pointer;transition:background 0.15s,border-color 0.15s,transform 0.1s;position:relative;}
 .session-row:active{transform:scale(0.98);}
-.session-row:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.14);}
-.session-row.highlight-long{border-color:rgba(196,95,58,0.35);background:rgba(196,95,58,0.07);}
-.session-row.highlight-quality{border-color:rgba(212,168,67,0.35);background:rgba(212,168,67,0.06);}
-.session-row.highlight-race{border-color:rgba(224,48,96,0.4);background:rgba(224,48,96,0.08);}
+.session-row:hover{background:rgba(80,60,30,0.07);border-color:rgba(80,60,30,0.18);}
+.session-row.highlight-long{border-color:rgba(168,74,30,0.25);background:rgba(168,74,30,0.06);}
+.session-row.highlight-quality{border-color:rgba(196,124,32,0.25);background:rgba(196,124,32,0.06);}
+.session-row.highlight-race{border-color:rgba(139,26,46,0.3);background:rgba(139,26,46,0.06);}
 .session-row.past-session{opacity:0.5;}
 .session-row.completed{opacity:1;}
 .session-row.completed .effort-dots{opacity:0;}
@@ -78,13 +79,13 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 .session-title{font-size:11px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .session-dist{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;flex-shrink:0;}
 .effort-dots{display:flex;gap:2px;flex-shrink:0;}
-.effort-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.1);}
+.effort-dot{width:4px;height:4px;border-radius:50%;background:rgba(80,60,30,0.15);}
 .effort-dot.filled{background:currentColor;}
 .week-note{font-size:11px;color:var(--text2);line-height:1.5;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);flex-shrink:0;}
 
 /* ── NAV ── */
 .nav-row{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:420px;margin-top:12px;}
-.nav-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--text2);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.nav-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--border);background:var(--card);box-shadow:0 1px 4px rgba(60,40,10,0.08);color:var(--text2);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
 .nav-btn:hover{background:var(--card2);color:var(--text);border-color:var(--border2);}
 .nav-btn:active{transform:scale(0.93);}
 .nav-btn:disabled{opacity:0.2;cursor:default;}
@@ -97,10 +98,10 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 .panel{position:fixed;inset:0;z-index:150;display:flex;flex-direction:column;pointer-events:none;}
 .panel.open{pointer-events:all;}
 .panel-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background 0.3s;}
-.panel.open .panel-overlay{background:rgba(0,0,0,0.6);}
-.panel-content{position:absolute;left:0;right:0;bottom:0;background:var(--card3);border:1px solid var(--border2);border-bottom:none;border-radius:20px 20px 0 0;max-height:82vh;display:flex;flex-direction:column;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);}
+.panel.open .panel-overlay{background:rgba(30,20,10,0.55);}
+.panel-content{position:absolute;left:0;right:0;bottom:0;background:var(--card);border:1px solid var(--border2);border-bottom:none;border-radius:20px 20px 0 0;max-height:82vh;display:flex;flex-direction:column;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);}
 .panel.open .panel-content{transform:translateY(0);}
-.panel-handle{width:36px;height:4px;background:rgba(255,255,255,0.13);border-radius:2px;margin:12px auto 0;flex-shrink:0;}
+.panel-handle{width:36px;height:4px;background:rgba(80,60,30,0.18);border-radius:2px;margin:12px auto 0;flex-shrink:0;}
 .panel-header{padding:14px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;}
 .panel-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.04em;color:var(--text);}
 .panel-body{flex:1;overflow-y:auto;padding:16px 20px 32px;-webkit-overflow-scrolling:touch;}
@@ -108,7 +109,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 /* ── WEEK MENU ── */
 .phase-group{margin-bottom:18px;}
 .phase-group-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;padding:4px 0;border-bottom:1px solid var(--border);}
-.week-menu-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:background 0.15s;border:1px solid transparent;margin-bottom:5px;}
+.week-menu-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:background 0.15s;border:1px solid var(--border);margin-bottom:5px;background:var(--card);}
 .week-menu-item:hover{background:var(--card2);}
 .week-menu-item.current-wk{background:var(--card2);border-color:var(--border2);}
 .week-menu-num{font-family:'Bebas Neue',sans-serif;font-size:20px;line-height:1;min-width:32px;color:var(--text2);}
@@ -119,16 +120,16 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 .week-menu-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px;}
 .completion-ring{flex-shrink:0;position:relative;width:32px;height:32px;}
 .completion-ring svg{transform:rotate(-90deg);}
-.ring-bg{fill:none;stroke:rgba(255,255,255,0.07);stroke-width:2.5;}
+.ring-bg{fill:none;stroke:rgba(80,60,30,0.10);stroke-width:2.5;}
 .ring-fill{fill:none;stroke-width:2.5;stroke-linecap:round;transition:stroke-dashoffset 0.4s;}
 .ring-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:8px;color:var(--text3);}
 
 /* ── DRAWER ── */
 .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);z-index:200;pointer-events:none;transition:background 0.3s;}
-.drawer-overlay.open{background:rgba(0,0,0,0.7);pointer-events:all;}
-.drawer{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:460px;background:#16161f;border:1px solid rgba(255,255,255,0.1);border-bottom:none;border-radius:20px 20px 0 0;z-index:201;transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);max-height:86vh;overflow-y:auto;}
+.drawer-overlay.open{background:rgba(30,20,10,0.60);pointer-events:all;}
+.drawer{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:460px;background:#faf7f2;border:1px solid var(--border);border-bottom:none;border-radius:20px 20px 0 0;z-index:201;transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);max-height:86vh;overflow-y:auto;}
 .drawer.open{transform:translateX(-50%) translateY(0);}
-.drawer-handle{width:36px;height:4px;background:rgba(255,255,255,0.13);border-radius:2px;margin:12px auto 18px;}
+.drawer-handle{width:36px;height:4px;background:rgba(80,60,30,0.18);border-radius:2px;margin:12px auto 18px;}
 .drawer-header{padding:0 22px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:14px;}
 .drawer-icon{font-size:26px;flex-shrink:0;margin-top:2px;}
 .drawer-title-block{flex:1;}
@@ -142,10 +143,10 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 .drawer-step{display:flex;gap:10px;align-items:flex-start;}
 .drawer-step-num{font-family:'Bebas Neue',sans-serif;font-size:17px;line-height:1;flex-shrink:0;margin-top:1px;width:18px;text-align:center;}
 .drawer-step-text{font-size:13px;color:var(--text2);line-height:1.55;}
-.drawer-purpose{margin-top:14px;padding:10px 12px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:2px solid;font-size:12px;color:var(--text2);font-style:italic;line-height:1.5;margin-bottom:4px;}
+.drawer-purpose{margin-top:14px;padding:10px 12px;background:rgba(80,60,30,0.05);border-radius:8px;border-left:2px solid;font-size:12px;color:var(--text2);font-style:italic;line-height:1.5;margin-bottom:4px;}
 .drawer-effort-row{display:flex;align-items:center;gap:10px;margin-top:14px;}
 .drawer-effort-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);min-width:46px;}
-.drawer-effort-bar{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
+.drawer-effort-bar{flex:1;height:5px;background:rgba(80,60,30,0.07);border-radius:3px;overflow:hidden;}
 .drawer-effort-fill{height:100%;border-radius:3px;}
 .drawer-effort-val{font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);min-width:70px;text-align:right;}
 .drawer-complete-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:16px;margin-bottom:16px;padding:12px;border-radius:12px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
@@ -153,7 +154,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 .drawer-complete-btn.done{background:var(--green-dim);border-color:var(--green);color:var(--green);}
 
 /* ── FULL-PAGE VIEWS ── */
-.full-page{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;overflow-y:auto;padding:58px 0 40px;}
+.full-page{position:fixed;inset:0;z-index:50;display:none;overflow-y:auto;padding:58px 0 40px;}
 .full-page.open{display:block;}
 .full-inner{max-width:520px;margin:0 auto;padding:24px 20px;}
 .fp-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:0.04em;color:var(--text);margin-bottom:4px;}
@@ -168,11 +169,11 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 .tab-panel.active{display:block;}
 
 /* ── NUT CARDS ── */
-.nut-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}
+.nut-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;box-shadow:0 1px 6px rgba(60,40,10,0.06);}
 .nut-card-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;}
 .macro-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
 .macro-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);min-width:90px;}
-.macro-track{flex:1;height:5px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;}
+.macro-track{flex:1;height:5px;background:rgba(80,60,30,0.10);border-radius:3px;overflow:hidden;}
 .macro-fill{height:100%;border-radius:3px;}
 .macro-cal{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin-top:6px;}
 .principle-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start;}
@@ -187,30 +188,30 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 
 /* ── MEAL IDEAS ── */
 .meal-section-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
-.meal-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;}
+.meal-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;box-shadow:0 1px 5px rgba(60,40,10,0.05);}
 .meal-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;}
 .meal-desc{font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;}
 .meal-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
 .meal-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.07em;text-transform:uppercase;padding:2px 7px;border-radius:10px;background:var(--card2);color:var(--text3);}
-.meal-tag.tag-protein{background:rgba(224,90,43,0.15);color:var(--build);}
-.meal-tag.tag-carb{background:rgba(232,164,74,0.15);color:var(--base);}
-.meal-tag.tag-quick{background:rgba(90,158,122,0.15);color:var(--run);}
-.meal-tag.tag-race{background:rgba(224,48,96,0.15);color:var(--race);}
+.meal-tag.tag-protein{background:rgba(168,74,30,0.12);color:var(--build);}
+.meal-tag.tag-carb{background:rgba(196,124,32,0.12);color:var(--base);}
+.meal-tag.tag-quick{background:rgba(61,122,92,0.12);color:var(--run);}
+.meal-tag.tag-race{background:rgba(139,26,46,0.10);color:var(--race);}
 .meal-link{font-family:'DM Mono',monospace;font-size:10px;color:var(--taper);letter-spacing:0.05em;text-decoration:none;display:inline-flex;align-items:center;gap:4px;}
 .meal-link:hover{color:var(--text);}
 
 /* ── SUMMARY PAGE ── */
 .summary-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
-.summary-stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
+.summary-stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;box-shadow:0 1px 5px rgba(60,40,10,0.05);}
 .summary-stat-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
 .summary-stat-val{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;color:var(--text);}
 .summary-stat-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin-top:4px;}
-.chart-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;}
+.chart-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 1px 5px rgba(60,40,10,0.05);}
 .chart-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.09em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;}
 .bar-chart{display:flex;align-items:flex-end;gap:3px;height:100px;padding-bottom:4px;}
 .bar-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;}
 .bar-fill{width:100%;border-radius:3px 3px 0 0;transition:height 0.4s cubic-bezier(0.4,0,0.2,1);min-height:2px;cursor:pointer;position:relative;}
-.bar-fill.bar-current{outline:2px solid rgba(255,255,255,0.3);outline-offset:1px;}
+.bar-fill.bar-current{outline:2px solid rgba(80,60,30,0.25);outline-offset:1px;}
 .bar-fill.bar-projected{opacity:0.35;}
 .bar-wk{font-family:'DM Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:0.04em;}
 .bar-tooltip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--card3);border:1px solid var(--border2);border-radius:6px;padding:4px 8px;font-family:'DM Mono',monospace;font-size:10px;color:var(--text);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity 0.15s;z-index:10;}
@@ -226,7 +227,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 .big-ring-sub{font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:0.07em;text-transform:uppercase;margin-top:2px;}
 
 /* ── STRETCHES ── */
-.stretch-accordion{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;}
+.stretch-accordion{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 6px rgba(60,40,10,0.05);}
 .stretch-acc-header{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;transition:background 0.15s;}
 .stretch-acc-header:hover{background:var(--card2);}
 .stretch-acc-icon{font-size:20px;flex-shrink:0;}
@@ -250,9 +251,107 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 <body>
 <div class="bg-glow" id="bg-glow"></div>
 
+<!-- ── BACKGROUND ETCHING ── -->
+<svg class="bg-etching" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+  <!-- Rolling hills - background layer -->
+  <path d="M-10 480 Q80 390 180 410 Q280 430 360 390 Q440 350 540 370 Q640 390 720 360 Q760 345 810 350 L810 600 L-10 600Z" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.35"/>
+  <path d="M-10 500 Q60 420 150 440 Q240 460 320 420 Q400 380 500 400 Q600 420 680 395 Q740 375 810 380 L810 600 L-10 600Z" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.25"/>
+  <!-- Foreground hill -->
+  <path d="M-10 540 Q100 480 220 500 Q340 520 440 490 Q540 460 650 480 Q720 490 810 475 L810 600 L-10 600Z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+
+  <!-- Tree line - left cluster -->
+  <!-- Tree 1 -->
+  <line x1="60" y1="460" x2="60" y2="510" stroke="currentColor" stroke-width="1.2" opacity="0.4"/>
+  <path d="M60 460 Q48 440 38 418 Q52 422 60 418 Q68 422 82 418 Q72 440 60 460Z" fill="none" stroke="currentColor" stroke-width="0.9" opacity="0.35"/>
+  <path d="M60 445 Q50 428 42 408 Q54 412 60 408 Q66 412 78 408 Q70 428 60 445Z" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.3"/>
+  <path d="M60 430 Q52 416 46 398 Q56 401 60 398 Q64 401 74 398 Q68 416 60 430Z" fill="none" stroke="currentColor" stroke-width="0.7" opacity="0.25"/>
+  <!-- Etching lines on tree 1 -->
+  <line x1="50" y1="432" x2="58" y2="438" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+  <line x1="70" y1="432" x2="62" y2="438" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+  <line x1="48" y1="446" x2="58" y2="452" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+  <line x1="72" y1="446" x2="62" y2="452" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+
+  <!-- Tree 2 - taller -->
+  <line x1="95" y1="455" x2="95" y2="515" stroke="currentColor" stroke-width="1.2" opacity="0.4"/>
+  <path d="M95 455 Q82 432 70 406 Q85 411 95 406 Q105 411 120 406 Q108 432 95 455Z" fill="none" stroke="currentColor" stroke-width="0.9" opacity="0.35"/>
+  <path d="M95 438 Q84 418 74 395 Q87 399 95 395 Q103 399 116 395 Q106 418 95 438Z" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.3"/>
+  <path d="M95 420 Q86 403 78 384 Q89 387 95 384 Q101 387 112 384 Q104 403 95 420Z" fill="none" stroke="currentColor" stroke-width="0.7" opacity="0.25"/>
+  <path d="M95 402 Q88 388 82 372 Q91 374 95 372 Q99 374 108 372 Q102 388 95 402Z" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.2"/>
+
+  <!-- Tree 3 - shorter -->
+  <line x1="128" y1="468" x2="128" y2="512" stroke="currentColor" stroke-width="1" opacity="0.35"/>
+  <path d="M128 468 Q118 450 108 428 Q120 432 128 428 Q136 432 148 428 Q138 450 128 468Z" fill="none" stroke="currentColor" stroke-width="0.9" opacity="0.3"/>
+  <path d="M128 453 Q119 437 111 418 Q122 421 128 418 Q134 421 145 418 Q137 437 128 453Z" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.25"/>
+  <path d="M128 438 Q120 424 114 408 Q124 410 128 408 Q132 410 142 408 Q136 424 128 438Z" fill="none" stroke="currentColor" stroke-width="0.7" opacity="0.2"/>
+
+  <!-- Tree 4 small -->
+  <line x1="152" y1="472" x2="152" y2="508" stroke="currentColor" stroke-width="0.9" opacity="0.3"/>
+  <path d="M152 472 Q144 456 136 438 Q146 441 152 438 Q158 441 168 438 Q160 456 152 472Z" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.28"/>
+  <path d="M152 458 Q145 444 139 428 Q148 430 152 428 Q156 430 165 428 Q159 444 152 458Z" fill="none" stroke="currentColor" stroke-width="0.7" opacity="0.22"/>
+
+  <!-- Mid-distance trees - right of centre -->
+  <!-- Tree 5 -->
+  <line x1="580" y1="388" x2="580" y2="440" stroke="currentColor" stroke-width="1.1" opacity="0.32"/>
+  <path d="M580 388 Q569 368 558 344 Q572 349 580 344 Q588 349 602 344 Q591 368 580 388Z" fill="none" stroke="currentColor" stroke-width="0.85" opacity="0.28"/>
+  <path d="M580 372 Q570 354 562 332 Q574 336 580 332 Q586 336 598 332 Q590 354 580 372Z" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.22"/>
+  <path d="M580 355 Q572 340 566 322 Q576 324 580 322 Q584 324 594 322 Q588 340 580 355Z" fill="none" stroke="currentColor" stroke-width="0.65" opacity="0.18"/>
+  <path d="M580 338 Q574 325 569 310 Q577 312 580 310 Q583 312 591 310 Q586 325 580 338Z" fill="none" stroke="currentColor" stroke-width="0.55" opacity="0.15"/>
+
+  <!-- Tree 6 -->
+  <line x1="612" y1="393" x2="612" y2="448" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+  <path d="M612 393 Q602 374 592 352 Q605 356 612 352 Q619 356 632 352 Q622 374 612 393Z" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.26"/>
+  <path d="M612 377 Q603 360 595 340 Q607 343 612 340 Q617 343 629 340 Q621 360 612 377Z" fill="none" stroke="currentColor" stroke-width="0.7" opacity="0.20"/>
+  <path d="M612 360 Q604 345 598 328 Q608 330 612 328 Q616 330 626 328 Q620 345 612 360Z" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.16"/>
+
+  <!-- Tree 7 tall -->
+  <line x1="648" y1="381" x2="648" y2="442" stroke="currentColor" stroke-width="1.1" opacity="0.32"/>
+  <path d="M648 381 Q636 358 624 332 Q639 337 648 332 Q657 337 672 332 Q660 358 648 381Z" fill="none" stroke="currentColor" stroke-width="0.85" opacity="0.27"/>
+  <path d="M648 362 Q637 342 627 318 Q641 322 648 318 Q655 322 669 318 Q659 342 648 362Z" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.22"/>
+  <path d="M648 344 Q638 326 630 305 Q642 308 648 305 Q654 308 666 305 Q658 326 648 344Z" fill="none" stroke="currentColor" stroke-width="0.65" opacity="0.17"/>
+  <path d="M648 325 Q640 310 634 292 Q644 294 648 292 Q652 294 662 292 Q656 310 648 325Z" fill="none" stroke="currentColor" stroke-width="0.55" opacity="0.14"/>
+  <path d="M648 306 Q642 293 637 278 Q645 280 648 278 Q651 280 659 278 Q654 293 648 306Z" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.11"/>
+
+  <!-- Tree 8 small far right -->
+  <line x1="700" y1="392" x2="700" y2="438" stroke="currentColor" stroke-width="0.9" opacity="0.26"/>
+  <path d="M700 392 Q691 374 682 354 Q694 358 700 354 Q706 358 718 354 Q709 374 700 392Z" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.22"/>
+  <path d="M700 376 Q692 360 685 342 Q696 345 700 342 Q704 345 715 342 Q708 360 700 376Z" fill="none" stroke="currentColor" stroke-width="0.65" opacity="0.17"/>
+
+  <!-- Distant rolling treeline horizon - very faint -->
+  <path d="M-10 355 Q30 340 50 328 Q58 318 70 315 Q78 310 88 318 Q100 328 115 320 Q125 312 138 308 Q148 304 158 312 Q168 320 185 315 Q200 310 215 318 Q228 325 245 318 Q258 312 272 306 Q285 300 298 308 Q310 315 326 310 Q340 305 355 310 Q365 315 378 308 Q388 302 400 298 Q412 294 425 300 Q438 306 452 300 Q462 295 476 292 Q488 288 500 295 Q512 302 528 296 Q540 290 555 287 Q568 284 580 290 Q592 296 606 290 Q618 285 632 282 Q645 279 658 285 Q670 291 685 286 Q698 281 714 278 Q726 275 740 280 Q752 285 766 279 Q778 274 795 272 L810 272 L810 300 Q795 298 778 302 Q762 306 748 300 Q734 295 720 300 Q706 305 692 300 Q678 296 664 301 Q650 306 636 301 Q622 297 608 302 Q594 307 580 302 Q566 298 552 303 Q538 308 524 302 Q510 297 496 302 Q482 307 468 302 Q454 297 440 302 Q426 307 412 302 Q398 298 384 303 Q370 308 356 303 Q342 298 328 304 Q314 309 300 304 Q286 300 272 305 Q258 310 244 306 Q230 302 216 307 Q202 312 188 307 Q174 303 160 308 Q146 313 132 308 Q118 304 105 309 Q92 314 78 308 Q64 303 50 309 Q36 315 20 310 Q5 305 -10 310Z" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.12"/>
+
+  <!-- Ground texture lines - foreground path hint -->
+  <path d="M-10 555 Q50 548 120 552 Q190 556 260 549 Q330 542 400 546 Q470 550 540 544 Q610 538 680 542 Q730 545 810 540" fill="none" stroke="currentColor" stroke-width="0.7" opacity="0.18"/>
+  <path d="M-10 568 Q60 562 140 566 Q220 570 300 563 Q380 556 460 561 Q540 566 620 559 Q690 553 810 557" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.12"/>
+
+  <!-- Stone wall hint bottom left -->
+  <path d="M-10 578 Q20 572 55 575 Q90 578 125 573 Q145 570 160 574" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.16"/>
+  <line x1="15" y1="573" x2="15" y2="578" stroke="currentColor" stroke-width="0.6" opacity="0.14"/>
+  <line x1="32" y1="575" x2="32" y2="578" stroke="currentColor" stroke-width="0.6" opacity="0.14"/>
+  <line x1="50" y1="574" x2="50" y2="578" stroke="currentColor" stroke-width="0.6" opacity="0.14"/>
+  <line x1="68" y1="573" x2="68" y2="577" stroke="currentColor" stroke-width="0.6" opacity="0.12"/>
+  <line x1="86" y1="575" x2="86" y2="578" stroke="currentColor" stroke-width="0.6" opacity="0.12"/>
+  <line x1="104" y1="574" x2="104" y2="577" stroke="currentColor" stroke-width="0.6" opacity="0.10"/>
+  <line x1="122" y1="573" x2="122" y2="577" stroke="currentColor" stroke-width="0.6" opacity="0.10"/>
+
+  <!-- Bird shapes - very distant sky -->
+  <path d="M240 180 Q246 175 252 180" fill="none" stroke="currentColor" stroke-width="0.7" opacity="0.12"/>
+  <path d="M258 170 Q265 165 272 170" fill="none" stroke="currentColor" stroke-width="0.7" opacity="0.10"/>
+  <path d="M280 185 Q286 181 292 185" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.08"/>
+  <path d="M560 155 Q567 150 574 155" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.09"/>
+  <path d="M578 165 Q584 161 590 165" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.07"/>
+
+  <!-- Hatching on foreground hill for texture -->
+  <line x1="180" y1="520" x2="200" y2="525" stroke="currentColor" stroke-width="0.4" opacity="0.12"/>
+  <line x1="190" y1="515" x2="210" y2="522" stroke="currentColor" stroke-width="0.4" opacity="0.10"/>
+  <line x1="340" y1="510" x2="358" y2="516" stroke="currentColor" stroke-width="0.4" opacity="0.11"/>
+  <line x1="350" y1="505" x2="368" y2="512" stroke="currentColor" stroke-width="0.4" opacity="0.09"/>
+  <line x1="500" y1="512" x2="520" y2="518" stroke="currentColor" stroke-width="0.4" opacity="0.10"/>
+  <line x1="510" y1="507" x2="530" y2="514" stroke="currentColor" stroke-width="0.4" opacity="0.08"/>
+</svg>
+
 <!-- ── MENU BAR ── -->
 <div class="menubar">
-  <div class="menubar-logo">18W</div>
+  <div class="menubar-logo">TP ☀️ '26</div>
   <button class="menubar-btn active" id="mb-plan"    onclick="showView('plan')">Plan</button>
   <button class="menubar-btn"        id="mb-summary" onclick="showView('summary')">Summary</button>
   <button class="menubar-btn"        id="mb-stretch" onclick="showView('stretch')">Stretch</button>
@@ -288,7 +387,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
         <div class="legend-item"><div class="legend-dot" style="background:var(--base)"></div>Base</div>
         <div class="legend-item"><div class="legend-dot" style="background:var(--build)"></div>Build</div>
         <div class="legend-item"><div class="legend-dot" style="background:var(--taper)"></div>Taper</div>
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(255,255,255,0.15)"></div>Projected</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(80,60,30,0.15)"></div>Projected</div>
       </div>
     </div>
     <div class="chart-wrap">
@@ -974,7 +1073,7 @@ function openDrawer(wIdx,si,e){
   // S&C section for combined run+S&C sessions
   const scEl=document.getElementById('d-sc-detail');
   if(s.scDetail){
-    const scCol='#7b8fd4';
+    const scCol='#4a6e7a';
     scEl.style.display='block';
     scEl.innerHTML=`
       <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
@@ -1090,7 +1189,7 @@ function renderSummary(){
   const offset=circ-(planPct/100)*circ;
   bigR.innerHTML=`
     <svg width="140" height="140" viewBox="0 0 140 140" style="transform:rotate(-90deg)">
-      <circle fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="${sw}" cx="70" cy="70" r="${r}"/>
+      <circle fill="none" stroke="rgba(80,60,30,0.10)" stroke-width="${sw}" cx="70" cy="70" r="${r}"/>
       <circle fill="none" stroke="var(--green)" stroke-width="${sw}" stroke-linecap="round"
         cx="70" cy="70" r="${r}" stroke-dasharray="${circ}" stroke-dashoffset="${offset}"/>
     </svg>
@@ -1137,7 +1236,7 @@ function renderSummary(){
   }).join(' ');
   document.getElementById('cum-chart').innerHTML=`
     <svg viewBox="0 0 ${cw2} ${ch2}" preserveAspectRatio="none" style="width:100%;height:100%">
-      <polyline points="${ptStr}" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+      <polyline points="${ptStr}" fill="none" stroke="rgba(80,60,30,0.20)" stroke-width="2"/>
       ${pastStr?`<polyline points="${pastStr}" fill="none" stroke="var(--green)" stroke-width="2.5"/>`:''}
     </svg>`;
 }
