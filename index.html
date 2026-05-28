@@ -874,30 +874,21 @@ function navigate(dir){
 }
 
 function jumpTo(idx){
-  showView('plan');
   closeWeekMenu();
-  // Defer so showView has time to make plan visible before we touch card elements
+  // Wait for the menu slide-out transition (350ms) before switching card
   setTimeout(()=>{
-    if(idx===current) return;
-    const dir=idx>current?1:-1;
-    const cc=document.getElementById(`card-${current}`);
+    document.querySelectorAll('.card').forEach(c=>{
+      c.classList.remove('active','exit-left','exit-right');
+      c.style.transition='none';
+      c.style.transform='';
+      c.style.opacity='';
+    });
     const nc=document.getElementById(`card-${idx}`);
-    if(!cc||!nc) return;
-    nc.style.transition='none';
-    nc.style.transform=dir>0?'translateX(80px) scale(0.96)':'translateX(-80px) scale(0.96)';
-    nc.style.opacity='0';
-    nc.classList.remove('active');
-    nc.getBoundingClientRect();
-    cc.style.transition='transform 0.3s,opacity 0.3s';
-    cc.classList.remove('active');
-    cc.classList.add(dir>0?'exit-left':'exit-right');
-    nc.style.transition='transform 0.38s cubic-bezier(0.4,0,0.2,1),opacity 0.38s cubic-bezier(0.4,0,0.2,1)';
-    nc.style.transform='';nc.style.opacity='';
-    nc.classList.add('active');
+    if(nc) nc.classList.add('active');
     current=idx;
     updateUI();
-    setTimeout(()=>{cc.classList.remove('exit-left','exit-right');},400);
-  }, 20);
+    showView('plan');
+  }, 360);
 }
 
 // ═══════════════════════════
