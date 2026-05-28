@@ -6,503 +6,264 @@
 <title>18 Weeks</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0a0a0f;
-  --card: #12121a;
-  --card2: #1a1a26;
-  --border: rgba(255,255,255,0.07);
-  --text: #f0eee8;
-  --text2: #8a8799;
-  --text3: #4a4860;
-  --recovery: #7eb8a4;
-  --base:     #e8a44a;
-  --build:    #e05a2b;
-  --taper:    #7b9fd4;
-  --easy:     #5a9e7a;
-  --long:     #c45f3a;
-  --quality:  #d4a843;
-  --strength: #7b8fd4;
-  --race:     #e03060;
+:root{
+  --bg:#0a0a0f;--card:#12121a;--card2:#1a1a26;--card3:#1f1f2e;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --text:#f0eee8;--text2:#8a8799;--text3:#4a4860;
+  --recovery:#7eb8a4;--base:#e8a44a;--build:#e05a2b;--taper:#7b9fd4;
+  --run:#5a9e7a;--long:#c45f3a;--quality:#d4a843;--strength:#7b8fd4;--race:#e03060;
+  --green:#4caf7d;--green-dim:rgba(76,175,125,0.15);
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-html, body {
-  width: 100%; height: 100%;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  overflow: hidden;
-  user-select: none;
-}
-
-.bg-glow {
-  position: fixed;
-  width: 500px; height: 500px;
-  border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.07;
-  pointer-events: none;
-  transition: background 0.6s ease;
-  top: -100px; left: 50%;
-  transform: translateX(-50%);
-  z-index: 0;
-}
-
-.shell {
-  position: relative;
-  width: 100%; height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
-  padding: 16px;
-}
-
-.progress-track {
-  width: 100%;
-  max-width: 420px;
-  height: 2px;
-  background: var(--border);
-  border-radius: 1px;
-  margin-bottom: 16px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  border-radius: 1px;
-  transition: width 0.4s cubic-bezier(0.4,0,0.2,1), background 0.4s;
-}
-
-.deck {
-  position: relative;
-  width: 100%;
-  max-width: 420px;
-  height: calc(100vh - 140px);
-  max-height: 700px;
-}
-
-.card {
-  position: absolute;
-  inset: 0;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 24px 22px 20px;
-  display: flex;
-  flex-direction: column;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(60px) scale(0.96);
-  transition: transform 0.38s cubic-bezier(0.4,0,0.2,1),
-              opacity 0.38s cubic-bezier(0.4,0,0.2,1);
-  overflow: hidden;
-}
-
-.card.active {
-  opacity: 1;
-  pointer-events: all;
-  transform: translateX(0) scale(1);
-}
-
-.card.exit-left  { opacity: 0; pointer-events: none; transform: translateX(-80px) scale(0.94); }
-.card.exit-right { opacity: 0; pointer-events: none; transform: translateX(80px) scale(0.94); }
-
-.card-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 14px;
-}
-
-.week-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 72px;
-  line-height: 1;
-  letter-spacing: 0.01em;
-  color: var(--text);
-  opacity: 0.15;
-  position: absolute;
-  right: 18px;
-  top: 14px;
-}
-
-.phase-tag {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-weight: 500;
-}
-
-.tag-recovery { background: rgba(126,184,164,0.15); color: var(--recovery); }
-.tag-base     { background: rgba(232,164,74,0.15);  color: var(--base); }
-.tag-build    { background: rgba(224,90,43,0.15);   color: var(--build); }
-.tag-taper    { background: rgba(123,159,212,0.15); color: var(--taper); }
-
-.special-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
-
-.tag-cutback { background: rgba(123,143,212,0.15); color: var(--strength); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; }
-.tag-peak    { background: rgba(224,90,43,0.2);    color: var(--build);    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; }
-.tag-race-wk { background: rgba(224,48,96,0.2);    color: var(--race);     font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; }
-
-.volume-section { margin-bottom: 16px; }
-
-.volume-row {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.volume-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 44px;
-  line-height: 1;
-  letter-spacing: 0.02em;
-}
-
-.volume-unit  { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text2); letter-spacing: 0.06em; }
-.volume-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-left: auto; align-self: center; }
-
-.vol-bar-track { width: 100%; height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
-.vol-bar-fill  { height: 100%; border-radius: 3px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
-
-.divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
-
-.sessions-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text3);
-  margin-bottom: 10px;
-}
-
-.sessions-list {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  flex: 1;
-  overflow: hidden;
-}
-
-.session-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  background: rgba(255,255,255,0.03);
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, transform 0.1s;
-}
-
-.session-row:active { transform: scale(0.98); }
-
-.session-row:hover {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(255,255,255,0.14);
-}
-
-.session-row.highlight-long    { border-color: rgba(196,95,58,0.35);  background: rgba(196,95,58,0.07); }
-.session-row.highlight-quality { border-color: rgba(212,168,67,0.35); background: rgba(212,168,67,0.06); }
-.session-row.highlight-race    { border-color: rgba(224,48,96,0.4);   background: rgba(224,48,96,0.08); }
-
-.session-row.highlight-long:hover    { background: rgba(196,95,58,0.14); }
-.session-row.highlight-quality:hover { background: rgba(212,168,67,0.12); }
-.session-row.highlight-race:hover    { background: rgba(224,48,96,0.15); }
-
-.session-icon { font-size: 15px; flex-shrink: 0; width: 22px; text-align: center; }
-.session-info { flex: 1; min-width: 0; }
-
-.session-day {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text3);
-  margin-bottom: 1px;
-}
-
-.session-title {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.session-dist { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; flex-shrink: 0; }
-
-.tap-hint {
-  font-size: 9px;
-  color: var(--text3);
-  flex-shrink: 0;
-  font-family: 'DM Mono', monospace;
-  letter-spacing: 0.04em;
-  opacity: 0.7;
-}
-
-.effort-dots { display: flex; gap: 3px; flex-shrink: 0; }
-.effort-dot  { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.1); }
-.effort-dot.filled { background: currentColor; }
-
-.week-note {
-  font-size: 11px;
-  color: var(--text2);
-  line-height: 1.5;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid var(--border);
-  flex-shrink: 0;
-}
-
-.nav-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 420px;
-  margin-top: 14px;
-}
-
-.nav-btn {
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text2);
-  font-size: 18px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s;
-}
-
-.nav-btn:hover    { background: var(--card2); color: var(--text); border-color: rgba(255,255,255,0.15); }
-.nav-btn:active   { transform: scale(0.93); }
-.nav-btn:disabled { opacity: 0.2; cursor: default; }
-
-.nav-counter { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text3); letter-spacing: 0.08em; }
-.nav-counter strong { color: var(--text2); }
-
-.swipe-hint {
-  position: absolute;
-  bottom: -28px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  color: var(--text3);
-  letter-spacing: 0.08em;
-  white-space: nowrap;
-  opacity: 0;
-  animation: fadeHint 3s ease 1s forwards;
-}
-
-@keyframes fadeHint {
-  0%   { opacity: 0; }
-  20%  { opacity: 1; }
-  70%  { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-/* ── SESSION DETAIL DRAWER ── */
-.drawer-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0);
-  z-index: 200;
-  pointer-events: none;
-  transition: background 0.3s ease;
-}
-
-.drawer-overlay.open {
-  background: rgba(0,0,0,0.65);
-  pointer-events: all;
-}
-
-.drawer {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%) translateY(100%);
-  width: 100%;
-  max-width: 460px;
-  background: #16161f;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-bottom: none;
-  border-radius: 20px 20px 0 0;
-  padding: 0 0 32px;
-  z-index: 201;
-  transition: transform 0.35s cubic-bezier(0.32,0.72,0,1);
-  max-height: 85vh;
-  overflow-y: auto;
-}
-
-.drawer.open {
-  transform: translateX(-50%) translateY(0);
-}
-
-.drawer-handle {
-  width: 36px;
-  height: 4px;
-  background: rgba(255,255,255,0.15);
-  border-radius: 2px;
-  margin: 14px auto 20px;
-}
-
-.drawer-header {
-  padding: 0 22px 16px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-.drawer-icon {
-  font-size: 28px;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.drawer-title-block { flex: 1; }
-
-.drawer-day {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-
-.drawer-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px;
-  letter-spacing: 0.02em;
-  line-height: 1.1;
-  color: var(--text);
-}
-
-.drawer-dist {
-  font-family: 'DM Mono', monospace;
-  font-size: 13px;
-  margin-top: 6px;
-  font-weight: 500;
-}
-
-.drawer-body { padding: 18px 22px 0; }
-
-.drawer-section-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text3);
-  margin-bottom: 10px;
-}
-
-.drawer-detail {
-  font-size: 14px;
-  color: var(--text2);
-  line-height: 1.65;
-}
-
-.drawer-steps {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 4px;
-}
-
-.drawer-step {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-}
-
-.drawer-step-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 18px;
-  line-height: 1;
-  flex-shrink: 0;
-  margin-top: 1px;
-  width: 20px;
-  text-align: center;
-}
-
-.drawer-step-text {
-  font-size: 13px;
-  color: var(--text2);
-  line-height: 1.55;
-}
-
-.drawer-purpose {
-  margin-top: 16px;
-  padding: 12px 14px;
-  background: rgba(255,255,255,0.03);
-  border-radius: 10px;
-  border-left: 2px solid;
-  font-size: 12px;
-  color: var(--text2);
-  font-style: italic;
-  line-height: 1.5;
-}
-
-.drawer-effort-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.drawer-effort-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text3);
-  min-width: 50px;
-}
-
-.drawer-effort-bar {
-  flex: 1;
-  height: 6px;
-  background: rgba(255,255,255,0.06);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.drawer-effort-fill {
-  height: 100%;
-  border-radius: 3px;
-}
-
-.drawer-effort-val {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  color: var(--text2);
-  min-width: 32px;
-  text-align: right;
-}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden;user-select:none;}
+.bg-glow{position:fixed;width:600px;height:600px;border-radius:50%;filter:blur(130px);opacity:0.06;pointer-events:none;transition:background 0.7s;top:-150px;left:50%;transform:translateX(-50%);z-index:0;}
+
+/* ── MENU BAR ── */
+.menubar{position:fixed;top:0;left:0;right:0;height:50px;background:rgba(10,10,15,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 12px;gap:2px;z-index:100;}
+.menubar-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.06em;color:var(--text);opacity:0.5;margin-right:10px;flex-shrink:0;}
+.menubar-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text2);padding:5px 10px;border-radius:6px;border:none;background:transparent;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.menubar-btn:hover{background:var(--card2);color:var(--text);}
+.menubar-btn.active{background:var(--card2);color:var(--text);}
+.menubar-spacer{flex:1;}
+.race-ticker{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.05em;white-space:nowrap;}
+.race-ticker strong{color:var(--text2);}
+
+/* ── SHELL ── */
+.shell{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1;padding:66px 16px 16px;}
+.progress-track{width:100%;max-width:420px;height:2px;background:var(--border);border-radius:1px;margin-bottom:14px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:1px;transition:width 0.4s cubic-bezier(0.4,0,0.2,1),background 0.4s;}
+
+/* ── DECK ── */
+.deck{position:relative;width:100%;max-width:420px;flex:1;min-height:0;}
+.card{position:absolute;inset:0;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px 20px 16px;display:flex;flex-direction:column;opacity:0;pointer-events:none;transform:translateX(60px) scale(0.96);transition:transform 0.38s cubic-bezier(0.4,0,0.2,1),opacity 0.38s cubic-bezier(0.4,0,0.2,1);overflow:hidden;}
+.card.active{opacity:1;pointer-events:all;transform:translateX(0) scale(1);}
+.card.exit-left{opacity:0;pointer-events:none;transform:translateX(-80px) scale(0.94);}
+.card.exit-right{opacity:0;pointer-events:none;transform:translateX(80px) scale(0.94);}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.week-num{font-family:'Bebas Neue',sans-serif;font-size:66px;line-height:1;color:var(--text);opacity:0.12;position:absolute;right:16px;top:12px;}
+.phase-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-weight:500;}
+.tag-recovery{background:rgba(126,184,164,0.15);color:var(--recovery);}
+.tag-base{background:rgba(232,164,74,0.15);color:var(--base);}
+.tag-build{background:rgba(224,90,43,0.15);color:var(--build);}
+.tag-taper{background:rgba(123,159,212,0.15);color:var(--taper);}
+.special-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;}
+.tag-cutback{background:rgba(123,143,212,0.15);color:var(--strength);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
+.tag-peak{background:rgba(224,90,43,0.2);color:var(--build);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
+.tag-race-wk{background:rgba(224,48,96,0.2);color:var(--race);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
+.week-date-line{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.07em;margin-bottom:10px;}
+.volume-section{margin-bottom:12px;}
+.volume-row{display:flex;align-items:baseline;gap:8px;margin-bottom:6px;}
+.volume-num{font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;letter-spacing:0.02em;}
+.volume-unit{font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);letter-spacing:0.06em;}
+.volume-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-left:auto;align-self:center;}
+.vol-bar-track{width:100%;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;}
+.vol-bar-fill{height:100%;border-radius:2px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1);}
+.divider{border:none;border-top:1px solid var(--border);margin:10px 0;}
+.sessions-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.sessions-list{display:flex;flex-direction:column;gap:5px;flex:1;overflow:hidden;}
+.session-row{display:flex;align-items:center;gap:8px;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid var(--border);cursor:pointer;transition:background 0.15s,border-color 0.15s,transform 0.1s;position:relative;}
+.session-row:active{transform:scale(0.98);}
+.session-row:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.14);}
+.session-row.highlight-long{border-color:rgba(196,95,58,0.35);background:rgba(196,95,58,0.07);}
+.session-row.highlight-quality{border-color:rgba(212,168,67,0.35);background:rgba(212,168,67,0.06);}
+.session-row.highlight-race{border-color:rgba(224,48,96,0.4);background:rgba(224,48,96,0.08);}
+.session-row.past-session{opacity:0.5;}
+.session-row.completed{opacity:1;}
+.session-row.completed .effort-dots{opacity:0;}
+.session-done-tick{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:16px;height:16px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;flex-shrink:0;opacity:0;transition:opacity 0.2s;}
+.session-row.completed .session-done-tick{opacity:1;}
+.session-icon{font-size:14px;flex-shrink:0;width:20px;text-align:center;}
+.session-info{flex:1;min-width:0;}
+.session-day{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:1px;}
+.session-title{font-size:11px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.session-dist{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;flex-shrink:0;}
+.effort-dots{display:flex;gap:2px;flex-shrink:0;}
+.effort-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.1);}
+.effort-dot.filled{background:currentColor;}
+.week-note{font-size:11px;color:var(--text2);line-height:1.5;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);flex-shrink:0;}
+
+/* ── NAV ── */
+.nav-row{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:420px;margin-top:12px;}
+.nav-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--text2);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.nav-btn:hover{background:var(--card2);color:var(--text);border-color:var(--border2);}
+.nav-btn:active{transform:scale(0.93);}
+.nav-btn:disabled{opacity:0.2;cursor:default;}
+.nav-counter{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:0.08em;}
+.nav-counter strong{color:var(--text2);}
+.swipe-hint{position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.08em;white-space:nowrap;opacity:0;animation:fadeHint 3s ease 1.5s forwards;}
+@keyframes fadeHint{0%{opacity:0;}20%{opacity:1;}70%{opacity:1;}100%{opacity:0;}}
+
+/* ── PANELS ── */
+.panel{position:fixed;inset:0;z-index:150;display:flex;flex-direction:column;pointer-events:none;}
+.panel.open{pointer-events:all;}
+.panel-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background 0.3s;}
+.panel.open .panel-overlay{background:rgba(0,0,0,0.6);}
+.panel-content{position:absolute;left:0;right:0;bottom:0;background:var(--card3);border:1px solid var(--border2);border-bottom:none;border-radius:20px 20px 0 0;max-height:82vh;display:flex;flex-direction:column;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);}
+.panel.open .panel-content{transform:translateY(0);}
+.panel-handle{width:36px;height:4px;background:rgba(255,255,255,0.13);border-radius:2px;margin:12px auto 0;flex-shrink:0;}
+.panel-header{padding:14px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.panel-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.04em;color:var(--text);}
+.panel-body{flex:1;overflow-y:auto;padding:16px 20px 32px;-webkit-overflow-scrolling:touch;}
+
+/* ── WEEK MENU ── */
+.phase-group{margin-bottom:18px;}
+.phase-group-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;padding:4px 0;border-bottom:1px solid var(--border);}
+.week-menu-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:background 0.15s;border:1px solid transparent;margin-bottom:5px;}
+.week-menu-item:hover{background:var(--card2);}
+.week-menu-item.current-wk{background:var(--card2);border-color:var(--border2);}
+.week-menu-num{font-family:'Bebas Neue',sans-serif;font-size:20px;line-height:1;min-width:32px;color:var(--text2);}
+.week-menu-num.current-wk-num{color:var(--text);}
+.week-menu-info{flex:1;}
+.week-menu-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.05em;margin-bottom:2px;}
+.week-menu-vol{font-size:12px;color:var(--text2);}
+.week-menu-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px;}
+.completion-ring{flex-shrink:0;position:relative;width:32px;height:32px;}
+.completion-ring svg{transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:rgba(255,255,255,0.07);stroke-width:2.5;}
+.ring-fill{fill:none;stroke-width:2.5;stroke-linecap:round;transition:stroke-dashoffset 0.4s;}
+.ring-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:8px;color:var(--text3);}
+
+/* ── DRAWER ── */
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);z-index:200;pointer-events:none;transition:background 0.3s;}
+.drawer-overlay.open{background:rgba(0,0,0,0.7);pointer-events:all;}
+.drawer{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:460px;background:#16161f;border:1px solid rgba(255,255,255,0.1);border-bottom:none;border-radius:20px 20px 0 0;z-index:201;transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);max-height:86vh;overflow-y:auto;}
+.drawer.open{transform:translateX(-50%) translateY(0);}
+.drawer-handle{width:36px;height:4px;background:rgba(255,255,255,0.13);border-radius:2px;margin:12px auto 18px;}
+.drawer-header{padding:0 22px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:14px;}
+.drawer-icon{font-size:26px;flex-shrink:0;margin-top:2px;}
+.drawer-title-block{flex:1;}
+.drawer-day{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:3px;}
+.drawer-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:0.02em;line-height:1.1;color:var(--text);}
+.drawer-dist{font-family:'DM Mono',monospace;font-size:13px;margin-top:5px;font-weight:500;}
+.drawer-body{padding:16px 22px 0;}
+.drawer-section-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.drawer-detail{font-size:13px;color:var(--text2);line-height:1.65;}
+.drawer-steps{display:flex;flex-direction:column;gap:9px;margin-top:2px;}
+.drawer-step{display:flex;gap:10px;align-items:flex-start;}
+.drawer-step-num{font-family:'Bebas Neue',sans-serif;font-size:17px;line-height:1;flex-shrink:0;margin-top:1px;width:18px;text-align:center;}
+.drawer-step-text{font-size:13px;color:var(--text2);line-height:1.55;}
+.drawer-purpose{margin-top:14px;padding:10px 12px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:2px solid;font-size:12px;color:var(--text2);font-style:italic;line-height:1.5;margin-bottom:4px;}
+.drawer-effort-row{display:flex;align-items:center;gap:10px;margin-top:14px;}
+.drawer-effort-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);min-width:46px;}
+.drawer-effort-bar{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
+.drawer-effort-fill{height:100%;border-radius:3px;}
+.drawer-effort-val{font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);min-width:70px;text-align:right;}
+.drawer-complete-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:16px;margin-bottom:16px;padding:12px;border-radius:12px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.drawer-complete-btn:hover{background:var(--card2);}
+.drawer-complete-btn.done{background:var(--green-dim);border-color:var(--green);color:var(--green);}
+
+/* ── FULL-PAGE VIEWS ── */
+.full-page{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;overflow-y:auto;padding:58px 0 40px;}
+.full-page.open{display:block;}
+.full-inner{max-width:520px;margin:0 auto;padding:24px 20px;}
+.fp-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:0.04em;color:var(--text);margin-bottom:4px;}
+.fp-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:20px;}
+
+/* ── TABS ── */
+.tab-row{display:flex;gap:5px;margin-bottom:20px;flex-wrap:wrap;}
+.tab-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.09em;text-transform:uppercase;padding:7px 13px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all 0.15s;}
+.tab-btn:hover{background:var(--card2);color:var(--text);}
+.tab-btn.active{background:var(--card2);color:var(--text);border-color:var(--border2);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ── NUT CARDS ── */
+.nut-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}
+.nut-card-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;}
+.macro-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.macro-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);min-width:90px;}
+.macro-track{flex:1;height:5px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;}
+.macro-fill{height:100%;border-radius:3px;}
+.macro-cal{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin-top:6px;}
+.principle-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start;}
+.principle-item:last-child{border-bottom:none;}
+.principle-num{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--build);line-height:1;min-width:22px;margin-top:1px;}
+.principle-text{font-size:13px;color:var(--text2);line-height:1.6;}
+.principle-text strong{color:var(--text);font-weight:600;}
+.timing-item{padding:12px 0;border-bottom:1px solid var(--border);}
+.timing-item:last-child{border-bottom:none;}
+.timing-when{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:5px;}
+.timing-detail{font-size:13px;color:var(--text2);line-height:1.6;}
+
+/* ── MEAL IDEAS ── */
+.meal-section-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.meal-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;}
+.meal-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.meal-desc{font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;}
+.meal-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
+.meal-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.07em;text-transform:uppercase;padding:2px 7px;border-radius:10px;background:var(--card2);color:var(--text3);}
+.meal-tag.tag-protein{background:rgba(224,90,43,0.15);color:var(--build);}
+.meal-tag.tag-carb{background:rgba(232,164,74,0.15);color:var(--base);}
+.meal-tag.tag-quick{background:rgba(90,158,122,0.15);color:var(--run);}
+.meal-tag.tag-race{background:rgba(224,48,96,0.15);color:var(--race);}
+.meal-link{font-family:'DM Mono',monospace;font-size:10px;color:var(--taper);letter-spacing:0.05em;text-decoration:none;display:inline-flex;align-items:center;gap:4px;}
+.meal-link:hover{color:var(--text);}
+
+/* ── SUMMARY PAGE ── */
+.summary-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.summary-stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
+.summary-stat-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
+.summary-stat-val{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;color:var(--text);}
+.summary-stat-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin-top:4px;}
+.chart-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;}
+.chart-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.09em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;}
+.bar-chart{display:flex;align-items:flex-end;gap:3px;height:100px;padding-bottom:4px;}
+.bar-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;}
+.bar-fill{width:100%;border-radius:3px 3px 0 0;transition:height 0.4s cubic-bezier(0.4,0,0.2,1);min-height:2px;cursor:pointer;position:relative;}
+.bar-fill.bar-current{outline:2px solid rgba(255,255,255,0.3);outline-offset:1px;}
+.bar-fill.bar-projected{opacity:0.35;}
+.bar-wk{font-family:'DM Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:0.04em;}
+.bar-tooltip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--card3);border:1px solid var(--border2);border-radius:6px;padding:4px 8px;font-family:'DM Mono',monospace;font-size:10px;color:var(--text);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity 0.15s;z-index:10;}
+.bar-fill:hover .bar-tooltip{opacity:1;}
+.phase-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
+.legend-item{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:0.05em;}
+.legend-dot{width:8px;height:8px;border-radius:2px;}
+.progress-ring-wrap{display:flex;justify-content:center;margin:16px 0;}
+.big-ring{position:relative;width:140px;height:140px;}
+.big-ring svg{transform:rotate(-90deg);}
+.big-ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.big-ring-pct{font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;color:var(--text);}
+.big-ring-sub{font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:0.07em;text-transform:uppercase;margin-top:2px;}
+
+/* ── STRETCHES ── */
+.stretch-accordion{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;}
+.stretch-acc-header{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;transition:background 0.15s;}
+.stretch-acc-header:hover{background:var(--card2);}
+.stretch-acc-icon{font-size:20px;flex-shrink:0;}
+.stretch-acc-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.03em;color:var(--text);flex:1;}
+.stretch-acc-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.06em;}
+.stretch-acc-arrow{font-size:12px;color:var(--text3);transition:transform 0.2s;flex-shrink:0;}
+.stretch-accordion.open .stretch-acc-arrow{transform:rotate(180deg);}
+.stretch-acc-body{display:none;border-top:1px solid var(--border);}
+.stretch-accordion.open .stretch-acc-body{display:block;}
+.stretch-item{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);align-items:flex-start;}
+.stretch-item:last-child{border-bottom:none;}
+.stretch-num{font-family:'Bebas Neue',sans-serif;font-size:20px;line-height:1;color:var(--text3);min-width:22px;margin-top:1px;}
+.stretch-info{flex:1;}
+.stretch-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.stretch-duration{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.06em;margin-bottom:4px;}
+.stretch-cue{font-size:12px;color:var(--text2);line-height:1.5;}
+.stretch-intro{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:16px;padding:12px 14px;background:var(--card);border-radius:10px;border-left:2px solid var(--text3);}
 </style>
 </head>
 <body>
-
 <div class="bg-glow" id="bg-glow"></div>
 
-<div class="shell">
-  <div class="progress-track">
-    <div class="progress-fill" id="progress-fill"></div>
-  </div>
+<!-- ── MENU BAR ── -->
+<div class="menubar">
+  <div class="menubar-logo">18W</div>
+  <button class="menubar-btn active" id="mb-plan"    onclick="showView('plan')">Plan</button>
+  <button class="menubar-btn"        id="mb-summary" onclick="showView('summary')">Summary</button>
+  <button class="menubar-btn"        id="mb-stretch" onclick="showView('stretch')">Stretch</button>
+  <button class="menubar-btn"        id="mb-nut"     onclick="showView('nutrition')">Nutrition</button>
+  <button class="menubar-btn"        id="mb-weeks"   onclick="toggleWeekMenu()">Weeks ▾</button>
+  <div class="menubar-spacer"></div>
+  <div class="race-ticker" id="race-ticker"></div>
+</div>
+
+<!-- ── PLAN VIEW ── -->
+<div class="shell" id="view-plan">
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
   <div class="deck" id="deck"></div>
   <div class="nav-row">
     <button class="nav-btn" id="btn-prev" onclick="navigate(-1)">←</button>
@@ -511,7 +272,120 @@ html, body {
   </div>
 </div>
 
-<!-- Session detail drawer -->
+<!-- ── SUMMARY VIEW ── -->
+<div class="full-page" id="view-summary">
+  <div class="full-inner">
+    <div class="fp-title">Summary</div>
+    <div class="fp-sub">Plan overview · Progress · Projected mileage</div>
+    <div class="summary-stat-grid" id="summary-stats"></div>
+    <div class="progress-ring-wrap"><div class="big-ring" id="big-ring"></div></div>
+    <div class="chart-wrap">
+      <div class="chart-label">Weekly volume — all 18 weeks (km)</div>
+      <div class="bar-chart" id="bar-chart"></div>
+      <div class="phase-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--recovery)"></div>Recovery</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--base)"></div>Base</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--build)"></div>Build</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--taper)"></div>Taper</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(255,255,255,0.15)"></div>Projected</div>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-label">Cumulative distance (km)</div>
+      <div id="cum-chart" style="height:80px;position:relative;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── STRETCH VIEW ── -->
+<div class="full-page" id="view-stretch">
+  <div class="full-inner">
+    <div class="fp-title">Stretches</div>
+    <div class="fp-sub">Four routines · Tap to expand</div>
+    <div class="stretch-intro">All stretches are static holds unless noted. Never stretch cold — do these post-run or after 5 minutes of easy movement. Hold each stretch at a mild tension, never pain.</div>
+    <div id="stretch-content"></div>
+  </div>
+</div>
+
+<!-- ── NUTRITION VIEW ── -->
+<div class="full-page" id="view-nutrition">
+  <div class="full-inner">
+    <div class="fp-title">Nutrition</div>
+    <div class="fp-sub">Macros · Principles · Long Run · Race Day · Meals</div>
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="switchTab('nut','macros',this)">Macros</button>
+      <button class="tab-btn" onclick="switchTab('nut','principles',this)">Principles</button>
+      <button class="tab-btn" onclick="switchTab('nut','longrun',this)">Long Run</button>
+      <button class="tab-btn" onclick="switchTab('nut','raceday',this)">Race Day</button>
+      <button class="tab-btn" onclick="switchTab('nut','meals',this)">Meals</button>
+    </div>
+    <div class="tab-panel active" id="nut-macros">
+      <div class="nut-card">
+        <div class="nut-card-label">Training Days</div>
+        <div class="macro-row"><div class="macro-label">Protein</div><div class="macro-track"><div class="macro-fill" style="width:75%;background:#e05a2b"></div></div><div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);min-width:40px;text-align:right">150g</div></div>
+        <div class="macro-row"><div class="macro-label">Carbohydrate</div><div class="macro-track"><div class="macro-fill" style="width:77%;background:#e8a44a"></div></div><div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);min-width:40px;text-align:right">270g</div></div>
+        <div class="macro-row"><div class="macro-label">Fat</div><div class="macro-track"><div class="macro-fill" style="width:58%;background:#5a9e7a"></div></div><div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);min-width:40px;text-align:right">70g</div></div>
+        <div class="macro-cal">≈ 2,350 kcal</div>
+      </div>
+      <div class="nut-card">
+        <div class="nut-card-label">Rest Days</div>
+        <div class="macro-row"><div class="macro-label">Protein</div><div class="macro-track"><div class="macro-fill" style="width:75%;background:#e05a2b"></div></div><div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);min-width:40px;text-align:right">150g</div></div>
+        <div class="macro-row"><div class="macro-label">Carbohydrate</div><div class="macro-track"><div class="macro-fill" style="width:49%;background:#e8a44a"></div></div><div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);min-width:40px;text-align:right">170g</div></div>
+        <div class="macro-row"><div class="macro-label">Fat</div><div class="macro-track"><div class="macro-fill" style="width:57%;background:#5a9e7a"></div></div><div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);min-width:40px;text-align:right">68g</div></div>
+        <div class="macro-cal">≈ 1,890 kcal</div>
+      </div>
+      <div class="nut-card" style="font-size:13px;color:var(--text2);line-height:1.65;">Based on ~72kg targeting ~65kg. Protein held constant to preserve muscle. Carbs lower on rest days. As weekly volume exceeds 50km, nudge training day carbs to 290–310g. Hit protein first, carbs second, let fat fill the rest.</div>
+    </div>
+    <div class="tab-panel" id="nut-principles">
+      <div class="nut-card">
+        <div class="principle-item"><div class="principle-num">1</div><div class="principle-text"><strong>Protein first.</strong> 150g daily no matter what. Spread across meals — 35–40g per sitting. Most important number on the sheet.</div></div>
+        <div class="principle-item"><div class="principle-num">2</div><div class="principle-text"><strong>Carb timing.</strong> Eat most carbs around training. Large carb meal 2–3 hours before quality sessions or long runs. Good carb meal within 60 min of finishing any run.</div></div>
+        <div class="principle-item"><div class="principle-num">3</div><div class="principle-text"><strong>Don't undereat on big days.</strong> Long runs and quality sessions require more food, not less. Under-fuelling raises injury risk and ruins the next session. Weight loss happens on rest days.</div></div>
+        <div class="principle-item"><div class="principle-num">4</div><div class="principle-text"><strong>Recovery window.</strong> Within 30–60 min of finishing any run: protein + carbs. Protein shake and banana, Greek yoghurt with fruit, or eggs on toast.</div></div>
+        <div class="principle-item"><div class="principle-num">5</div><div class="principle-text"><strong>Hydration.</strong> 2–3 litres daily. Dark urine = drink more. Electrolytes on any run over 60 minutes.</div></div>
+        <div class="principle-item"><div class="principle-num">6</div><div class="principle-text"><strong>Alcohol.</strong> One or two drinks won't matter. More than that on a training night will hit sleep quality and compromise the next session.</div></div>
+        <div class="principle-item"><div class="principle-num">7</div><div class="principle-text"><strong>Consistency over perfection.</strong> One poor day is nothing. A week of poor eating matters. Aim for 80–90% adherence across the block.</div></div>
+        <div class="principle-item"><div class="principle-num">8</div><div class="principle-text"><strong>Weight loss pace.</strong> Max 0.5kg/week. Faster and you're losing muscle. Volume does most of the work — don't force it.</div></div>
+      </div>
+    </div>
+    <div class="tab-panel" id="nut-longrun">
+      <div class="nut-card">
+        <div class="timing-item"><div class="timing-when" style="color:var(--recovery)">Night Before</div><div class="timing-detail">Carbohydrate-rich dinner. Pasta, rice, or potatoes with protein. Nothing rich, spicy, or unfamiliar. Eat at a normal time.</div></div>
+        <div class="timing-item"><div class="timing-when" style="color:var(--recovery)">Morning Of</div><div class="timing-detail">Eat 2–3 hours before. Oats, toast, or rice with moderate protein. Low fat and fibre to aid digestion. If eating close to run time, keep it small.</div></div>
+        <div class="timing-item"><div class="timing-when" style="color:var(--base)">60–90 min+ runs</div><div class="timing-detail">Start fuelling at 45 minutes — don't wait for hunger. Aim for 40–60g carbohydrates per hour. Gels, chews, dates, banana. Test options in training — never try something new on race day.</div></div>
+        <div class="timing-item"><div class="timing-when" style="color:var(--build)">3hr+ runs</div><div class="timing-detail">60–80g carbohydrates per hour. Electrolytes every 60–90 minutes. Sip water regularly rather than large amounts infrequently.</div></div>
+        <div class="timing-item"><div class="timing-when" style="color:var(--base)">After</div><div class="timing-detail">Within 30 min: protein + carbs. Rehydrate — weigh before and after long runs to gauge sweat loss. Proper meal within 2 hours.</div></div>
+        <div class="timing-item"><div class="timing-when" style="color:var(--text3)">What to Carry</div><div class="timing-detail">90min+: vest or belt, 500ml–1.5L water, 2–4 gels, electrolyte tabs. 3hr+: 1.5L+ water, 6–8 gels or real food, salt tabs, spare snack.</div></div>
+      </div>
+    </div>
+    <div class="tab-panel" id="nut-raceday">
+      <div class="nut-card">
+        <div class="timing-item"><div class="timing-when" style="color:var(--taper)">Race Week</div><div class="timing-detail">Increase carbs from Wednesday — extra serving of rice, pasta, or oats per meal. Keep protein constant. Stay hydrated throughout the week.</div></div>
+        <div class="timing-item"><div class="timing-when" style="color:var(--taper)">Race Eve</div><div class="timing-detail">Familiar carb-rich dinner, eaten early (6–7pm). Nothing new. Prepare kit, drop bags, and nutrition the evening before so race morning is calm.</div></div>
+        <div class="timing-item"><div class="timing-when" style="color:var(--taper)">Race Morning</div><div class="timing-detail">2–3 hours before start. 80–100g carbohydrates, moderate protein, low fat and fibre. Porridge, toast, or rice. Sip water but don't overdrink. Coffee is fine if that's your routine — don't change it.</div></div>
+        <div class="timing-item"><div class="timing-when" style="color:var(--build)">First 10 Miles</div><div class="timing-detail">Start fuelling at 30–40 minutes even if fine. The first 10 miles must feel easy. Eat to a schedule, not hunger. Walk all significant climbs.</div></div>
+        <div class="timing-item"><div class="timing-when" style="color:var(--build)">Aid Stations</div><div class="timing-detail">Use every one. Top up water and take food even if not hungry. Real food becomes more appealing than gels in the second half.</div></div>
+        <div class="timing-item"><div class="timing-when" style="color:var(--build)">Drop Bags</div><div class="timing-detail">Pack more than you need. Something salty, something sweet, spare gels. Dry top if weather is variable. Blister kit.</div></div>
+        <div class="timing-item"><div class="timing-when" style="color:var(--race)">Miles 30+</div><div class="timing-detail">If stomach turns, switch to salty real food — soup, broth, flat coke. Keep moving. Walk if needed but don't stop.</div></div>
+      </div>
+    </div>
+    <div class="tab-panel" id="nut-meals">
+      <div id="meals-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WEEK MENU PANEL ── -->
+<div class="panel" id="week-menu-panel">
+  <div class="panel-overlay" onclick="closeWeekMenu()"></div>
+  <div class="panel-content" id="week-menu-content">
+    <div class="panel-handle"></div>
+    <div class="panel-header"><div class="panel-title">All Weeks</div></div>
+    <div class="panel-body" id="week-menu-body"></div>
+  </div>
+</div>
+
+<!-- ── SESSION DRAWER ── -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 <div class="drawer" id="drawer">
   <div class="drawer-handle"></div>
@@ -529,779 +403,817 @@ html, body {
       <div class="drawer-effort-bar"><div class="drawer-effort-fill" id="d-effort-fill"></div></div>
       <div class="drawer-effort-val" id="d-effort-val"></div>
     </div>
-    <hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
+    <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
     <div class="drawer-section-label">Session Detail</div>
     <div id="d-detail"></div>
     <div class="drawer-purpose" id="d-purpose"></div>
+    <button class="drawer-complete-btn" id="d-complete-btn" onclick="toggleSessionComplete()">
+      <span id="d-complete-icon">○</span>
+      <span id="d-complete-label">Mark as complete</span>
+    </button>
   </div>
 </div>
 
 <script>
+// ═══════════════════════════
+// DATA
+// ═══════════════════════════
+const RACE_DATE  = new Date('2026-09-19');
+const WEEK_START = new Date('2026-05-18');
+
 const WEEKS = [
+  {week:1,phase:"recovery",volume:13,note:"Week 1 complete. Two easy runs post-UTA50 in Australia. Recovery priority.",sessions:[
+    {day:"Wed",type:"run",title:"Easy run",distance:"5km",detail:"Easy Zone 2 effort. Conversational pace throughout — if you can't hold a conversation, slow down. Focus on getting the legs moving after the race.",purpose:"Re-establish routine. Flush post-race fatigue."},
+    {day:"Sat",type:"run",title:"Easy run",distance:"8km",detail:"Another easy Zone 2 run. No watch pressure. Run by feel — if it feels hard, walk. The goal this week is simply to move.",purpose:"Aerobic stimulus without stress. Begin recovery arc."},
+  ]},
+  {week:2,phase:"recovery",volume:23,note:"Back from Australia. All Zone 2 — conversational pace throughout.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2. Back in the UK — use this run to settle into your home routine. Flat route preferred.",purpose:"Re-establish home training routine post-travel."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"5km",detail:"Short and easy. Focus on feel, not pace.",purpose:"Maintain easy aerobic stimulus mid-week."},
+    {day:"Sat",type:"long",title:"Easy long run",distance:"10km",detail:"Longest run of the week but still fully easy. If legs feel heavy, back off — recovery is the priority.",purpose:"Time on feet. Aerobic base without fatigue accumulation."},
+  ]},
+  {week:3,phase:"recovery",volume:30,note:"Final recovery week. First S&C introduced — form focus only.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run",distance:"7km",detail:"Easy Zone 2. Shoulders down, light footfall, relaxed arms.",purpose:"Aerobic base building. Maintain routine."},
+    {day:"Tue",type:"run",title:"Easy run",distance:"5km",detail:"Short easy run. No pressure on pace or distance.",purpose:"Volume accumulation."},
+    {day:"Wed",type:"strength",title:"S&C Session A",distance:null,detail:["Bodyweight squat — 3×12","Glute bridge — 3×15","Reverse lunge — 3×10 each leg","Dead bug — 3×8 each side","Calf raise — 3×20","Plank — 3×30 sec","Rest 60–90 sec. Focus on movement quality."],purpose:"Introduce foundational movement patterns."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"5km",detail:"Easy effort. Notice how legs feel after first S&C. If heavy, slow down.",purpose:"Aerobic continuity. Monitor S&C response."},
+    {day:"Sat",type:"long",title:"Long run",distance:"13km",detail:"First double-digit long run post-UTA50. Easy throughout. Trail or mixed surface preferred.",purpose:"Time on feet. Rebuild long run habit."},
+  ]},
+  {week:4,phase:"base",volume:33,note:"4th run introduced. Two S&C sessions now standard. Practise fuelling on the long run.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"6km",detail:"Easy Zone 2. S&C Session B later — at least 2 hours after the run.",purpose:"Aerobic base. Introduce lower body strength."},
+    {day:"Tue",type:"strength",title:"S&C Session A",distance:null,detail:["Bodyweight squat — 3×12","Glute bridge — 3×15","Reverse lunge — 3×10 each leg","Dead bug — 3×8 each side","Calf raise — 3×20","Plank — 3×30 sec"],purpose:"Core stability and movement quality."},
+    {day:"Wed",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2. Fourth run — keep genuinely easy. Legs may feel slightly heavy from Monday's S&C.",purpose:"Volume accumulation."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"5km",detail:"Short easy Zone 2. Rolling terrain welcome.",purpose:"Aerobic base."},
+    {day:"Sat",type:"long",title:"Long run",distance:"14km",detail:"Easy effort. Take a gel or snack at 45 minutes — start practising fuelling habits now.",purpose:"Aerobic endurance. Establish fuelling habit."},
+  ]},
+  {week:5,phase:"base",volume:36,note:"Volume building. Introduce rolling terrain midweek if available.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"7km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Aerobic base. Lower body strength."},
+    {day:"Tue",type:"strength",title:"S&C Session A",distance:null,detail:["Bodyweight squat — 3×12","Glute bridge — 3×15","Reverse lunge — 3×10 each leg","Dead bug — 3×8 each side","Calf raise — 3×20","Plank — 3×30 sec"],purpose:"Core stability."},
+    {day:"Wed",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2. Introduce gentle rolling terrain — mild hills at easy effort.",purpose:"Aerobic volume. Begin trail specificity."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"5km",detail:"Short and easy. Focus on form: shoulders relaxed, light footfall.",purpose:"Aerobic base."},
+    {day:"Sat",type:"long",title:"Long run",distance:"16km",detail:"Easy effort. Practise eating every 45–60 minutes. Note what sits well in your stomach.",purpose:"Aerobic endurance. Fuelling practice."},
+  ]},
+  {week:6,phase:"base",volume:40,note:"Quality introduced — hill reps. Aerobic effort up, walk recovery down.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"7km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Aerobic base. Lower body strength."},
+    {day:"Tue",type:"strength",title:"S&C Session A",distance:null,detail:["Bodyweight squat — 3×12","Glute bridge — 3×15","Reverse lunge — 3×10 each leg","Dead bug — 3×8 each side","Calf raise — 3×20","Plank — 3×30 sec"],purpose:"Core stability. Final week of Session A."},
+    {day:"Wed",type:"quality",title:"Hill reps",distance:"~9km",detail:["Warm up 2km easy.","Find a hill 200–400m long.","Run up at strong aerobic effort — about 80%. Hard but not sprinting.","Walk back down as full recovery.","6–8 reps total.","Cool down 2km easy."],purpose:"Introduce quality stimulus. Build hill-specific strength."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"6km",detail:"Easy Zone 2. Legs may feel heavy from hill reps — keep it genuinely easy.",purpose:"Active recovery after quality session."},
+    {day:"Sat",type:"long",title:"Long run",distance:"18km",detail:"Easy effort. Hilly route preferred. Fuel every 45 minutes.",purpose:"Aerobic endurance. Trail specificity."},
+  ]},
+  {week:7,phase:"base",volume:32,cutback:true,note:"Cutback week. Absorb weeks 4–6. No quality session. Should feel comfortable.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"8km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Maintain routine during cutback."},
+    {day:"Tue",type:"strength",title:"S&C Session A",distance:null,detail:["Bodyweight squat — 3×12","Glute bridge — 3×15","Reverse lunge — 3×10 each leg","Dead bug — 3×8 each side","Calf raise — 3×20","Plank — 3×30 sec. Last week of Session A."],purpose:"Maintain S&C routine through cutback."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2. Do you feel fitter? Lighter on your feet? Notice improvements since week 4.",purpose:"Active recovery. Check adaptation."},
+    {day:"Sat",type:"long",title:"Long run",distance:"16km",detail:"Easy effort. Run a route you enjoy. Should feel comfortable and confidence-building.",purpose:"Easy endurance. Mental refresh."},
+  ]},
+  {week:8,phase:"base",volume:44,note:"Session C introduced. Hill reps resume — higher rep count.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"7km",detail:"Easy Zone 2. From this week: Mon = Session B (lower body), Tue = Session C (core & upper).",purpose:"Aerobic base. Lower body strength."},
+    {day:"Tue",type:"strength",title:"S&C Session C",distance:null,detail:["Press-up — 3×15 (or to failure)","Renegade row — 3×10 each side","Pike press-up — 3×10","Hollow body hold — 3×20 sec","Bird dog — 3×10 each side","Side plank — 3×30 sec each side","Superman hold — 3×10. Rest 60 sec."],purpose:"Core strength and postural durability."},
+    {day:"Wed",type:"quality",title:"Hill reps",distance:"~9km",detail:["Warm up 2km easy.","8–10 reps on a 200–400m hill at strong aerobic effort.","Walk back down full recovery.","Cool down 2km easy."],purpose:"Build hill strength and aerobic capacity."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2. Recover from hill session.",purpose:"Active recovery and volume."},
+    {day:"Sat",type:"long",title:"Long run",distance:"20km",detail:"Easy to moderate. Trail preferred. Fuel every 45 minutes. First 20km since UTA50 training.",purpose:"Aerobic endurance. Confidence milestone."},
+  ]},
+  {week:9,phase:"base",volume:48,note:"Strong uphill form — drive arms, shorten stride, lean from ankles.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"9km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Aerobic base. Lower body strength."},
+    {day:"Tue",type:"strength",title:"S&C Session C",distance:null,detail:["Press-up — 3×15","Renegade row — 3×10 each side","Pike press-up — 3×10","Hollow body hold — 3×20–25 sec","Bird dog — 3×10 each side","Side plank — 3×30–35 sec each side","Superman hold — 3×10"],purpose:"Core and upper body strength."},
+    {day:"Wed",type:"quality",title:"Hill reps",distance:"~10km",detail:["Warm up 2km easy.","10 reps on a 300–400m hill.","Drive arms forward, shorten stride, lean from ankles — not waist.","Walk back down full recovery.","Cool down 2km easy."],purpose:"Hill strength and trail-specific fitness."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"7km",detail:"Easy Zone 2. Active recovery.",purpose:"Active recovery and volume."},
+    {day:"Sat",type:"long",title:"Long run",distance:"22km",detail:"Easy to moderate. Fuel and hydrate well. Focus on finishing strong, not fast.",purpose:"Aerobic endurance. Build confidence."},
+  ]},
+  {week:10,phase:"base",volume:52,note:"Final base week. Mix short fast + longer aerobic hill efforts.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"9km",detail:"Easy Zone 2. S&C Session B later. Final base building week.",purpose:"Aerobic base. Lower body strength."},
+    {day:"Tue",type:"strength",title:"S&C Session C",distance:null,detail:["Press-up — 3×15","Renegade row — 3×10 each side","Pike press-up — 3×10","Hollow body hold — 3×25 sec","Bird dog — 3×10 each side","Side plank — 3×35 sec each side","Superman hold — 3×10"],purpose:"Core and upper body strength."},
+    {day:"Wed",type:"quality",title:"Hill reps — mixed",distance:"~11km",detail:["Warm up 2km easy.","10–12 reps — alternate shorter (200m) fast reps and longer (400m) aerobic efforts.","Walk recovery between all reps.","Cool down 2km easy."],purpose:"Build speed and aerobic hill strength."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2.",purpose:"Active recovery and volume."},
+    {day:"Sat",type:"long",title:"Long run",distance:"24km",detail:"Moderate effort on trail. Confidence long run — finish feeling you had more in the tank. Fuel every 45 minutes.",purpose:"Aerobic endurance. Confidence ahead of Phase 3."},
+  ]},
+  {week:11,phase:"build",volume:56,note:"Back-to-back runs introduced. Sunday easy after Saturday long.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"8km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Aerobic base. Lower body strength."},
+    {day:"Tue",type:"strength",title:"S&C Session C",distance:null,detail:["Press-up — 3×15","Renegade row — 3×10 each side","Pike press-up — 3×10","Hollow body hold — 3×25 sec","Bird dog — 3×10 each side","Side plank — 3×35 sec each side","Superman hold — 3×10"],purpose:"Core and upper body strength."},
+    {day:"Wed",type:"quality",title:"Hill efforts",distance:"~9km",detail:["Warm up 2km easy.","6 × 600m hill efforts — threshold feel, not sprint.","Walk or easy jog recovery.","Cool down 2km easy."],purpose:"Longer hill efforts. Build threshold capacity."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"7km",detail:"Easy Zone 2. Keep relaxed — Saturday is a big day.",purpose:"Active recovery."},
+    {day:"Sat",type:"long",title:"Long run",distance:"27km",detail:"Easy to moderate trail. Fuel every 40 minutes. Don't go out too fast.",purpose:"Aerobic endurance. Race-specific conditioning."},
+    {day:"Sun",type:"run",title:"Back-to-back easy",distance:"5km",detail:"Very easy recovery run. Training the body to run on tired legs — a key ultra skill.",purpose:"Back-to-back conditioning."},
+  ]},
+  {week:12,phase:"build",volume:59,note:"First flat tempo session. Alternating with hill efforts from here.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"7km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Aerobic base. Lower body strength."},
+    {day:"Tue",type:"strength",title:"S&C Session C",distance:null,detail:["Press-up — 3×15","Renegade row — 3×10 each side","Pike press-up — 3×10","Hollow body hold — 3×25 sec","Bird dog — 3×10 each side","Side plank — 3×40 sec each side","Superman hold — 3×10"],purpose:"Core and upper body strength."},
+    {day:"Wed",type:"quality",title:"Flat tempo",distance:"~10km",detail:["Warm up 2km easy.","25 minutes sustained tempo — comfortably hard. A word or two but not a conversation.","First flat speed session — builds road racing capacity.","Cool down 2km easy."],purpose:"Build flat speed and lactate threshold."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"6km",detail:"Easy Zone 2. Short recovery — Saturday is 30km.",purpose:"Active recovery."},
+    {day:"Sat",type:"long",title:"Long run",distance:"30km",detail:"First 30km long run. Easy to moderate. Eat every 40 minutes. Expect the last 5–6km to feel hard — that's the point.",purpose:"Race-specific conditioning. Build ultra confidence."},
+    {day:"Sun",type:"run",title:"Back-to-back easy",distance:"6km",detail:"Very easy the day after 30km. This will feel hard — that's intentional. Walk if needed.",purpose:"Back-to-back ultra conditioning."},
+  ]},
+  {week:13,phase:"build",volume:52,cutback:true,note:"Cutback week. Last 2-session S&C week. Light reps only.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"8km",detail:"Easy Zone 2. S&C Session B later. Last week with two S&C sessions.",purpose:"Maintain routine during cutback."},
+    {day:"Tue",type:"strength",title:"S&C Session C — final",distance:null,detail:["Press-up — 3×15","Renegade row — 3×10 each side","Pike press-up — 3×10","Hollow body hold — 3×25 sec","Bird dog — 3×10 each side","Side plank — 3×40 sec each side","Superman hold — 3×10. S&C drops to 1x from week 14."],purpose:"Final two-session S&C week."},
+    {day:"Wed",type:"quality",title:"Light hill reps",distance:"~9km",detail:["Warm up 2km easy.","6 × 400m hill reps at aerobic effort.","Walk recovery.","Cool down 2km easy. Don't push hard."],purpose:"Maintain quality without deep fatigue."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2. Absorb weeks 11–12.",purpose:"Active recovery. Consolidate adaptations."},
+    {day:"Sat",type:"long",title:"Long run",distance:"20km",detail:"Easy effort. Should feel comfortable after 30km. Enjoy the cutback.",purpose:"Easy endurance maintenance."},
+    {day:"Sun",type:"run",title:"Back-to-back easy",distance:"7km",detail:"Very easy. Relaxed and enjoyable.",purpose:"Back-to-back habit."},
+  ]},
+  {week:14,phase:"build",volume:62,note:"S&C drops to 1x/week. Trail tempo introduced.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"8km",detail:"Easy Zone 2. S&C Monday only from here — no Tuesday session.",purpose:"Aerobic base. Lower body strength (1x/week)."},
+    {day:"Wed",type:"quality",title:"Trail tempo",distance:"~10km",detail:["Warm up 2km easy on trail.","30 minutes sustained trail tempo — threshold feel on hilly terrain.","More race-specific than flat — terrain variation mirrors the race.","Cool down 2km easy."],purpose:"Race-specific threshold work."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"6km",detail:"Easy Zone 2. Short recovery before big weekend.",purpose:"Active recovery."},
+    {day:"Sat",type:"long",title:"Long run",distance:"32km",detail:"Second 30km+ long run. Moderate effort. Fuel every 35–40 minutes. Practice exact race-day nutrition strategy.",purpose:"Peak race-specific conditioning."},
+    {day:"Sun",type:"run",title:"Back-to-back easy",distance:"6km",detail:"Very easy. Walk sections if needed.",purpose:"Ultra back-to-back conditioning."},
+  ]},
+  {week:15,phase:"build",volume:65,peak:true,note:"Peak week. Everything built to this. Race conditions Saturday where possible.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run + S&C B (final)",distance:"7km",detail:"Easy Zone 2. Final S&C session of the plan.",purpose:"Aerobic base. Final strength session."},
+    {day:"Wed",type:"quality",title:"Race pace effort",distance:"~9km",detail:["Warm up 2km easy.","25 minutes at target race effort — easy-to-moderate for a 47-miler.","Goal is confidence and feel, not speed.","Cool down 2km easy."],purpose:"Race feel and confidence."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"7km",detail:"Easy Zone 2. Keep legs fresh — Saturday is the biggest training day.",purpose:"Active recovery. Prepare for peak long run."},
+    {day:"Sat",type:"long",title:"Peak long run",distance:"37km",detail:"The biggest training run of the plan. Trail and hilly — race conditions where possible. Fuel every 35 minutes. Walk steep climbs. Manage effort carefully in the first half.",purpose:"Peak race-specific conditioning. Most important session of the plan."},
+    {day:"Sun",type:"run",title:"Easy shakeout",distance:"5km",detail:"Very easy. Just keep moving. The fact you're running after 37km is the whole point.",purpose:"Back-to-back peak conditioning."},
+  ]},
+  {week:16,phase:"taper",volume:55,note:"Taper begins. Volume drops, sharpness maintained. Last hard quality session.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2. No S&C from here. Legs should start feeling better this week.",purpose:"Aerobic maintenance. Begin taper."},
+    {day:"Wed",type:"quality",title:"Flat tempo — last hard session",distance:"~9km",detail:["Warm up 2km easy.","20 minutes flat tempo — sustained threshold effort.","Last truly hard session before race day.","Cool down 2km easy."],purpose:"Maintain sharpness. Final hard quality session."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2. Recovery from tempo.",purpose:"Active recovery."},
+    {day:"Sat",type:"long",title:"Long run",distance:"25km",detail:"Easy to moderate. Confidence building — should feel manageable after peak weeks.",purpose:"Endurance maintenance. Confidence run."},
+    {day:"Sun",type:"run",title:"Easy run",distance:"5km",detail:"Very easy. Short recovery.",purpose:"Active recovery."},
+  ]},
+  {week:17,phase:"taper",volume:45,note:"Feeling fresh. Trust the training.",sessions:[
+    {day:"Mon",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2. Legs should feel noticeably better. Resist the urge to run harder.",purpose:"Aerobic maintenance. Deepen taper."},
+    {day:"Wed",type:"quality",title:"Light tempo ×4",distance:"~8km",detail:["Warm up 2km easy.","4 × 3 minutes tempo with 2 minutes easy jog recovery.","Light — just enough to feel sharp.","Cool down 2km easy."],purpose:"Maintain sharpness without fatigue."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"7km",detail:"Easy Zone 2.",purpose:"Aerobic maintenance."},
+    {day:"Sat",type:"long",title:"Easy long run",distance:"16km",detail:"Easy and relaxed. Run somewhere you enjoy. Fitness is banked — just ticking the engine over.",purpose:"Easy endurance. Mental freshness."},
+    {day:"Sun",type:"run",title:"Easy run",distance:"6km",detail:"Easy. Short. Relaxed.",purpose:"Active recovery."},
+  ]},
+  {week:18,phase:"taper",volume:20,raceWeek:true,note:"Keep legs moving, nothing more. Sleep, eat, hydrate. You've done the work.",sessions:[
+    {day:"Mon",type:"run",title:"Easy shakeout",distance:"6km",detail:"Very easy. Just keep legs moving. No watch pressure. The work is done.",purpose:"Maintain feel without fatigue."},
+    {day:"Wed",type:"run",title:"Shakeout + strides",distance:"9km",detail:["Easy run.","End with 4 × 20 second strides — brisk but not sprinting.","Walk 60 seconds between each stride."],purpose:"Sharpen legs before race day."},
+    {day:"Fri",type:"run",title:"Final shakeout",distance:"5km",detail:"Very easy. Last run before race day. 15–20 minutes easy. Finish feeling good.",purpose:"Keep legs fresh and loose."},
+    {day:"Sat",type:"race",title:"Cotswold Way 47",distance:"86km",detail:["Start conservative — first 20 miles must feel easy.","Fuel every 30–40 minutes from the gun.","Walk all significant climbs.","Use every aid station.","Miles 30+: if stomach turns, switch to salty food and flat coke.","Goal: manage the race well and finish strong."],purpose:"18 weeks building to this moment. Trust the work."},
+  ]},
+];
+
+// ═══════════════════════════
+// STRETCH DATA
+// ═══════════════════════════
+const STRETCHES = [
   {
-    week: 1, phase: "recovery", volume: 13,
-    note: "Week 1 complete. Two easy runs post-UTA50 in Australia. Recovery priority.",
-    sessions: [
-      {
-        day: "Wed", type: "run", title: "Easy run", distance: "5km",
-        detail: "Easy Zone 2 effort. Conversational pace throughout — if you can't hold a conversation, slow down. Focus on getting the legs moving after the race, not on any fitness goal.",
-        purpose: "Re-establish routine. Flush post-race fatigue.",
-      },
-      {
-        day: "Sat", type: "run", title: "Easy run", distance: "8km",
-        detail: "Another easy Zone 2 run. No watch pressure. Run by feel — if it feels hard, walk. The goal this week is simply to move.",
-        purpose: "Aerobic stimulus without stress. Begin recovery arc.",
-      },
-    ],
+    id:"easy", icon:"🏃", title:"Easy Run Routine", sub:"Post-run · 8–10 min",
+    intro:"A quick maintenance routine for easy run days. Holds should feel mild — this is upkeep, not deep tissue work.",
+    items:[
+      {name:"Standing quad stretch",duration:"30 sec each leg",cue:"Stand on one leg, pull heel to glute. Keep hips square and standing knee soft. Use a wall for balance if needed."},
+      {name:"Hip flexor lunge",duration:"40 sec each side",cue:"Step forward into a low lunge, back knee down. Shift hips forward gently until you feel a stretch in the front of the rear hip. Keep torso upright."},
+      {name:"Standing calf stretch",duration:"30 sec each leg",cue:"Step back with one foot, press heel into ground, keep leg straight. Lean into wall or fence. Hold, then bend the back knee slightly to target the deeper calf."},
+      {name:"Seated hamstring stretch",duration:"40 sec each leg",cue:"Sit on the floor, one leg extended. Hinge forward from hips — not the waist — keeping back flat. Reach toward foot. Stop at first resistance."},
+      {name:"Glute figure-four",duration:"40 sec each side",cue:"Lie on back, cross one ankle over the opposite knee. Either pull the lower leg toward chest or press gently through the crossed knee. Feel it in the outer glute."},
+      {name:"Child's pose",duration:"45 sec",cue:"Kneel and sit back toward heels, arms extended forward. Breathe deeply. Good for lower back and hip flexors simultaneously."},
+    ]
   },
   {
-    week: 2, phase: "recovery", volume: 23,
-    note: "Back from Australia. All Zone 2 — conversational pace throughout.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run", distance: "8km",
-        detail: "Easy Zone 2. Back in the UK — use this run to settle back into your home routine. Flat route preferred. Keep effort genuinely easy.",
-        purpose: "Re-establish home training routine post-travel.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "5km",
-        detail: "Short and easy. Focus on feel, not pace. Rolling terrain is fine if available.",
-        purpose: "Maintain easy aerobic stimulus mid-week.",
-      },
-      {
-        day: "Sat", type: "long", title: "Easy long run", distance: "10km",
-        detail: "Longest run of the week but still fully easy. Treat as an extended Zone 2 effort. No pushing at any point. If the legs feel heavy, back off further — recovery is the priority.",
-        purpose: "Time on feet. Aerobic base without fatigue accumulation.",
-      },
-    ],
+    id:"quality", icon:"⚡", title:"Quality Session Routine", sub:"Post-effort · 15 min",
+    intro:"Deeper and longer than the easy run routine. After hill reps or tempo work, muscles are more contracted and need deliberate release.",
+    items:[
+      {name:"Hip flexor lunge with rotation",duration:"45 sec each side",cue:"Low lunge position. Place the same-side hand on the floor for stability, open the opposite arm toward the ceiling. Rotate gently — feel the thoracic spine open."},
+      {name:"Deep quad stretch (lying)",duration:"40 sec each leg",cue:"Lie on your side, pull top heel to glute with your hand. Keep hips stacked and knees together. If flexible, gently draw the knee back further."},
+      {name:"Pigeon pose",duration:"60 sec each side",cue:"From all-fours, bring one shin forward at an angle. Extend the other leg behind. Sink the hips toward the floor. Use a folded towel under the hip if needed. Breathe into the stretch."},
+      {name:"Seated IT band stretch",duration:"40 sec each side",cue:"Sit with one leg extended. Cross the other foot over the extended knee. Hug the bent knee to chest and gently twist toward it. Feel along the outer thigh."},
+      {name:"Hamstring PNF stretch",duration:"3 reps × 10 sec each leg",cue:"Lie on back. Raise one leg as far as comfortable. Hold for 10 sec, then actively try to push the leg down against your own hand resistance for 5 sec, then relax and raise slightly higher. Repeat 3 times."},
+      {name:"Seated calf stretch with strap",duration:"40 sec each leg",cue:"Sit with leg extended. Loop a towel or belt around the ball of foot and gently pull toes toward you. Keep knee straight. Two phases: foot neutral, then slightly inverted."},
+      {name:"Supine spinal twist",duration:"45 sec each side",cue:"Lie on back, draw one knee to chest, then guide it across the body to the opposite side. Extend same-side arm out to the side, gaze opposite direction. Don't force the shoulder down."},
+      {name:"Downward dog",duration:"60 sec",cue:"Hands and feet on floor, hips high. Alternate bending each knee to pedal out the calves. Hold still and press both heels toward floor for final 30 sec."},
+    ]
   },
   {
-    week: 3, phase: "recovery", volume: 30,
-    note: "Final recovery week. First S&C introduced — form focus only.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run", distance: "7km",
-        detail: "Easy Zone 2. Settle into a comfortable rhythm. No ego — this is a recovery week. Focus on relaxed form: shoulders down, light footfall, relaxed arms.",
-        purpose: "Aerobic base building. Maintain routine.",
-      },
-      {
-        day: "Tue", type: "run", title: "Easy run", distance: "5km",
-        detail: "Short easy run. Nice and relaxed. No pressure on pace or distance.",
-        purpose: "Volume accumulation. Keep body moving.",
-      },
-      {
-        day: "Wed", type: "strength", title: "S&C Session A", distance: null,
-        detail: ["Bodyweight squat — 3×12", "Glute bridge — 3×15", "Reverse lunge — 3×10 each leg", "Dead bug — 3×8 each side", "Calf raise — 3×20", "Plank — 3×30 sec", "Rest 60–90 sec between sets. Focus entirely on movement quality — these are new patterns."],
-        purpose: "Introduce foundational movement patterns. Establish S&C routine.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "5km",
-        detail: "Easy effort. Notice how the legs feel after first S&C session. If heavy, slow down further — that's a normal response. This run is about aerobic continuity, not performance.",
-        purpose: "Aerobic continuity. Monitor S&C response.",
-      },
-      {
-        day: "Sat", type: "long", title: "Long run", distance: "13km",
-        detail: "First double-digit long run post-UTA50. Easy throughout — if it feels hard at any point, you're going too fast. Trail or mixed surface preferred. Bring water. Run by feel.",
-        purpose: "Time on feet. Rebuild long run habit.",
-      },
-    ],
+    id:"longrun", icon:"🏔", title:"Long Run Routine", sub:"Post long run · 20–25 min",
+    intro:"Your most thorough routine. After a long effort, take your time with this — don't rush the holds. The extra time spent here pays dividends in recovery.",
+    items:[
+      {name:"Elevated hip flexor stretch",duration:"60 sec each side",cue:"Low lunge with back foot elevated on a step or sofa. Sink hips down and forward. Add a side bend away from the raised leg for added hip flexor length."},
+      {name:"Pigeon pose — full",duration:"90 sec each side",cue:"Long hold. Get comfortable — use support under the hip if needed. Let gravity do the work. Focus on relaxed breathing. Don't rush."},
+      {name:"Hamstring stretch — two-stage",duration:"60 sec each leg",cue:"Stage 1: leg straight on a raised surface (step height), hinge forward from hips 30 sec. Stage 2: same position but flex foot and hold further 30 sec. Feel the difference."},
+      {name:"Deep calf and soleus stretch",duration:"60 sec each leg",cue:"Calf stretch against a wall. Straight leg 30 sec (gastrocnemius). Then bend the back knee while keeping heel down 30 sec (soleus — often the tighter one after long runs)."},
+      {name:"Quad release on floor",duration:"60 sec each side",cue:"Lie on side, pull heel to glute. Once comfortable, use your hand to gently draw the knee backward. Hold at the point of mild tension only."},
+      {name:"IT band and TFL stretch",duration:"45 sec each side",cue:"Standing: cross one leg behind the other, lean to the side of the front leg, push hip outward. Feel the pull along the outer thigh. Alternatively lie down and guide one knee across the body as in a supine twist."},
+      {name:"Seated glute and piriformis",duration:"60 sec each side",cue:"Sit on the floor with one leg crossed in front (like tailor's pose but one leg). Hinge forward gently. Feel the deep outer glute and piriformis. Often very tight after long trail runs."},
+      {name:"Supine spinal twist",duration:"60 sec each side",cue:"Lie on back. Draw one knee to chest, guide it across the body. Breathe deeply — let the weight of the leg pull the spine gently with each exhale."},
+      {name:"Legs up the wall",duration:"3–5 min",cue:"Lie near a wall, swing legs up vertically, arms relaxed by sides. Encourages venous return and reduces leg swelling. Best way to end the routine. Read, listen to something, or just breathe."},
+    ]
   },
   {
-    week: 4, phase: "base", volume: 33,
-    note: "4th run introduced. Two S&C sessions now standard. Practise fuelling on the long run.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run + S&C B", distance: "6km",
-        detail: "Easy Zone 2 run. S&C Session B later in the day or evening. Don't do S&C immediately after the run — give yourself at least 2 hours.",
-        purpose: "Aerobic base. Introduce lower body strength work.",
-      },
-      {
-        day: "Tue", type: "strength", title: "S&C Session A", distance: null,
-        detail: ["Bodyweight squat — 3×12", "Glute bridge — 3×15", "Reverse lunge — 3×10 each leg", "Dead bug — 3×8 each side", "Calf raise — 3×20", "Plank — 3×30 sec", "Rest 60–90 sec between sets."],
-        purpose: "Core stability and movement quality.",
-      },
-      {
-        day: "Wed", type: "run", title: "Easy run", distance: "8km",
-        detail: "Easy Zone 2. Fourth run — keep it genuinely easy. This run exists for volume accumulation, not intensity. The legs may feel slightly heavy from Monday's S&C.",
-        purpose: "Volume accumulation. Aerobic base.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "5km",
-        detail: "Short easy run. Zone 2 effort. Rolling terrain welcome if available.",
-        purpose: "Aerobic base. Active recovery.",
-      },
-      {
-        day: "Sat", type: "long", title: "Long run", distance: "14km",
-        detail: "Easy effort throughout. Focus on time on feet, not pace. Start practising fuelling now — take a gel or snack at 45 minutes in. Eat and drink during the run, not just before and after.",
-        purpose: "Aerobic endurance. Establish fuelling habit.",
-      },
-    ],
-  },
-  {
-    week: 5, phase: "base", volume: 36,
-    note: "Volume building steadily. Introduce rolling terrain midweek if available.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run + S&C B", distance: "7km",
-        detail: "Easy Zone 2 run. S&C Session B later in the day. Focus on single-leg exercises — these are the foundation of injury-free trail running.",
-        purpose: "Aerobic base. Lower body strength.",
-      },
-      {
-        day: "Tue", type: "strength", title: "S&C Session A", distance: null,
-        detail: ["Bodyweight squat — 3×12", "Glute bridge — 3×15", "Reverse lunge — 3×10 each leg", "Dead bug — 3×8 each side", "Calf raise — 3×20", "Plank — 3×30 sec", "Rest 60–90 sec. By now form should feel more natural."],
-        purpose: "Core stability. Reinforce movement patterns.",
-      },
-      {
-        day: "Wed", type: "run", title: "Easy run", distance: "8km",
-        detail: "Easy Zone 2. Begin introducing gentle rolling terrain if available — mild hills are fine at easy effort. Focus on relaxed form on the inclines.",
-        purpose: "Aerobic volume. Begin trail specificity.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "5km",
-        detail: "Short and easy. Focus on form: shoulders relaxed, light footfall, cadence around 170–180 spm if you're counting.",
-        purpose: "Aerobic base. Form focus.",
-      },
-      {
-        day: "Sat", type: "long", title: "Long run", distance: "16km",
-        detail: "Easy effort. Hills welcome but not forced. Practise eating every 45–60 minutes — note what sits well in your stomach during running. Test different gel flavours or real food options.",
-        purpose: "Aerobic endurance. Fuelling practice and gut training.",
-      },
-    ],
-  },
-  {
-    week: 6, phase: "base", volume: 40,
-    note: "Quality introduced — hill reps. Aerobic effort up, walk recovery down.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run + S&C B", distance: "7km",
-        detail: "Easy Zone 2. S&C Session B later. This is the last week with Session A on Tuesday — next week Session C replaces it.",
-        purpose: "Aerobic base. Lower body strength.",
-      },
-      {
-        day: "Tue", type: "strength", title: "S&C Session A", distance: null,
-        detail: ["Bodyweight squat — 3×12", "Glute bridge — 3×15", "Reverse lunge — 3×10 each leg", "Dead bug — 3×8 each side", "Calf raise — 3×20", "Plank — 3×30 sec"],
-        purpose: "Core stability. Final week of Session A.",
-      },
-      {
-        day: "Wed", type: "quality", title: "Hill reps", distance: "~9km",
-        detail: ["Warm up 2km easy.", "Find a hill 200–400m long.", "Run up at strong aerobic effort — about 80%, hard but not sprinting. You should be breathing hard but able to say a few words.", "Walk back down as full recovery between reps.", "6–8 reps total.", "Cool down 2km easy."],
-        purpose: "Introduce quality stimulus. Build hill-specific strength and trail fitness.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "6km",
-        detail: "Easy Zone 2. Legs may feel heavy from hill reps the day before — keep it genuinely easy. This run is active recovery, not training. If very sore, make it 5km or skip.",
-        purpose: "Active recovery after quality session.",
-      },
-      {
-        day: "Sat", type: "long", title: "Long run", distance: "18km",
-        detail: "Easy effort. Hilly route preferred — use what you built on Wednesday on the uphills. Focus on time on feet over pace. Fuel every 45 minutes.",
-        purpose: "Aerobic endurance. Begin trail specificity.",
-      },
-    ],
-  },
-  {
-    week: 7, phase: "base", volume: 32, cutback: true,
-    note: "Cutback week. Absorb weeks 4–6. No quality session. Should feel comfortable.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run + S&C B", distance: "8km",
-        detail: "Easy Zone 2. S&C Session B later in the day. This week should feel noticeably easier than last week — that's the point.",
-        purpose: "Maintain routine during cutback. Let adaptations consolidate.",
-      },
-      {
-        day: "Tue", type: "strength", title: "S&C Session A", distance: null,
-        detail: ["Bodyweight squat — 3×12", "Glute bridge — 3×15", "Reverse lunge — 3×10 each leg", "Dead bug — 3×8 each side", "Calf raise — 3×20", "Plank — 3×30 sec", "Last week of Session A. Next week introduces Session C."],
-        purpose: "Maintain S&C routine through cutback.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "8km",
-        detail: "Easy Zone 2. Use this week to tune in — do you feel fitter? Lighter on your feet? Notice any improvements in form or breathing since week 4.",
-        purpose: "Active recovery. Check adaptation.",
-      },
-      {
-        day: "Sat", type: "long", title: "Long run", distance: "16km",
-        detail: "Easy effort. Run an enjoyable route — somewhere you like. This run should feel comfortable and confidence-building. If it feels easy, that's perfect — it should.",
-        purpose: "Easy endurance. Mental refresh. Confidence building.",
-      },
-    ],
-  },
-  {
-    week: 8, phase: "base", volume: 44,
-    note: "Session C introduced replacing Session A. Hill reps resume with higher rep count.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run + S&C B", distance: "7km",
-        detail: "Easy Zone 2 run. S&C Session B later. From this week: Monday is always Session B (lower body), Tuesday is always Session C (core & upper).",
-        purpose: "Aerobic base. Lower body strength.",
-      },
-      {
-        day: "Tue", type: "strength", title: "S&C Session C", distance: null,
-        detail: ["Press-up — 3×15 (or to failure)", "Renegade row — 3×10 each side", "Pike press-up — 3×10", "Hollow body hold — 3×20 sec", "Bird dog — 3×10 each side", "Side plank — 3×30 sec each side", "Superman hold — 3×10", "Rest 60 sec between sets. New session — focus on form."],
-        purpose: "Core strength and postural durability. New session introduction.",
-      },
-      {
-        day: "Wed", type: "quality", title: "Hill reps", distance: "~9km",
-        detail: ["Warm up 2km easy.", "8–10 reps on a 200–400m hill at strong aerobic effort.", "Walk back down as full recovery between every rep.", "Cool down 2km easy.", "Higher rep count than week 6 — build into it, don't sprint the first reps."],
-        purpose: "Build hill strength and aerobic capacity.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "8km",
-        detail: "Easy Zone 2. Recover from hill session. Legs should be manageable by now — if still very heavy, slow down further.",
-        purpose: "Active recovery and volume.",
-      },
-      {
-        day: "Sat", type: "long", title: "Long run", distance: "20km",
-        detail: "Easy to moderate effort. Trail surface preferred. Fuel every 45 minutes. This is a milestone — first 20km long run since UTA50 training. Run easy and finish feeling you could have gone further.",
-        purpose: "Aerobic endurance. Confidence milestone.",
-      },
-    ],
-  },
-  {
-    week: 9, phase: "base", volume: 48,
-    note: "Strong uphill form focus — drive arms, shorten stride, lean from ankles.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run + S&C B", distance: "9km",
-        detail: "Easy Zone 2. S&C Session B later. Volume stepping up — keep the easy runs genuinely easy to absorb the load.",
-        purpose: "Aerobic base. Lower body strength.",
-      },
-      {
-        day: "Tue", type: "strength", title: "S&C Session C", distance: null,
-        detail: ["Press-up — 3×15", "Renegade row — 3×10 each side", "Pike press-up — 3×10", "Hollow body hold — 3×20 sec (build toward 30 sec)", "Bird dog — 3×10 each side", "Side plank — 3×30 sec each side (build toward 45 sec)", "Superman hold — 3×10"],
-        purpose: "Core and upper body strength.",
-      },
-      {
-        day: "Wed", type: "quality", title: "Hill reps", distance: "~10km",
-        detail: ["Warm up 2km easy.", "10 reps on a 300–400m hill.", "Focus on strong uphill form: drive arms forward (not sideways), shorten stride on steep sections, lean slightly forward from the ankles — not the waist.", "Walk back down as full recovery.", "Cool down 2km easy."],
-        purpose: "Hill strength and trail-specific fitness. Form refinement.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "7km",
-        detail: "Easy Zone 2. Active recovery after hill session. Keep it short and genuinely easy.",
-        purpose: "Active recovery and volume.",
-      },
-      {
-        day: "Sat", type: "long", title: "Long run", distance: "22km",
-        detail: "Easy to moderate. Longest run since UTA50 training. Fuel and hydrate well — eat every 45 minutes, sip water regularly. Focus on finishing strong, not fast. The last 5km should feel controlled.",
-        purpose: "Aerobic endurance. Build confidence for higher volume ahead.",
-      },
-    ],
-  },
-  {
-    week: 10, phase: "base", volume: 52,
-    note: "Final base week. Mix short fast reps + longer aerobic hill efforts on Wednesday.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run + S&C B", distance: "9km",
-        detail: "Easy Zone 2. S&C Session B later. Final base building week — the engine is built. Phase 3 starts next week.",
-        purpose: "Aerobic base. Lower body strength.",
-      },
-      {
-        day: "Tue", type: "strength", title: "S&C Session C", distance: null,
-        detail: ["Press-up — 3×15", "Renegade row — 3×10 each side", "Pike press-up — 3×10", "Hollow body hold — 3×25 sec", "Bird dog — 3×10 each side", "Side plank — 3×35 sec each side", "Superman hold — 3×10", "Rest 60 sec. Sessions should feel more controlled now."],
-        purpose: "Core and upper body strength.",
-      },
-      {
-        day: "Wed", type: "quality", title: "Hill reps — mixed", distance: "~11km",
-        detail: ["Warm up 2km easy.", "10–12 reps total — alternate between shorter (200m) faster reps and longer (400m) aerobic efforts.", "Walk recovery between all reps — don't jog down.", "The short reps should feel snappy; the long reps should feel like sustained hard effort.", "Cool down 2km easy."],
-        purpose: "Build both speed and aerobic hill strength. Prepare for Phase 3 quality.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "8km",
-        detail: "Easy Zone 2. Recover from hill session.",
-        purpose: "Active recovery and volume.",
-      },
-      {
-        day: "Sat", type: "long", title: "Long run", distance: "24km",
-        detail: "Moderate effort on trail. Confidence long run — you should finish feeling like you had more in the tank. Fuel every 45 minutes. This is the last long run before the build phase — make it count.",
-        purpose: "Aerobic endurance. Confidence builder ahead of Phase 3.",
-      },
-    ],
-  },
-  {
-    week: 11, phase: "build", volume: 56,
-    note: "Back-to-back runs introduced. Sunday easy after Saturday long.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run + S&C B", distance: "8km",
-        detail: "Easy Zone 2. S&C Session B later. First week of the build phase — keep easy runs genuinely easy to handle the increased load.",
-        purpose: "Aerobic base. Lower body strength.",
-      },
-      {
-        day: "Tue", type: "strength", title: "S&C Session C", distance: null,
-        detail: ["Press-up — 3×15", "Renegade row — 3×10 each side", "Pike press-up — 3×10", "Hollow body hold — 3×25 sec", "Bird dog — 3×10 each side", "Side plank — 3×35 sec each side", "Superman hold — 3×10"],
-        purpose: "Core and upper body strength.",
-      },
-      {
-        day: "Wed", type: "quality", title: "Hill efforts", distance: "~9km",
-        detail: ["Warm up 2km easy.", "6 × 600m hill efforts — longer reps than before.", "Strong aerobic effort — threshold feel, not sprint.", "Walk or very easy jog recovery back down.", "Cool down 2km easy."],
-        purpose: "Longer hill efforts. Build threshold capacity.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "7km",
-        detail: "Easy Zone 2. Keep it relaxed — Saturday is a big day.",
-        purpose: "Active recovery. Prepare for long run.",
-      },
-      {
-        day: "Sat", type: "long", title: "Long run", distance: "27km",
-        detail: "Easy to moderate trail run. First significant long run of the build phase. Fuel every 40 minutes. Hilly terrain preferred. Focus on steady effort — don't go out too fast.",
-        purpose: "Aerobic endurance. Build race-specific conditioning.",
-      },
-      {
-        day: "Sun", type: "run", title: "Back-to-back easy", distance: "5km",
-        detail: "Very easy recovery run the day after your long run. This is deliberately short. The purpose is training the body to run on tired legs — a key ultra skill. Keep it completely conversational.",
-        purpose: "Back-to-back conditioning. Simulate race fatigue.",
-      },
-    ],
-  },
-  {
-    week: 12, phase: "build", volume: 59,
-    note: "First flat tempo session. Alternating with hill efforts from here.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run + S&C B", distance: "7km",
-        detail: "Easy Zone 2. S&C Session B later. The week contains a big long run — keep all easy runs easy.",
-        purpose: "Aerobic base. Lower body strength.",
-      },
-      {
-        day: "Tue", type: "strength", title: "S&C Session C", distance: null,
-        detail: ["Press-up — 3×15", "Renegade row — 3×10 each side", "Pike press-up — 3×10", "Hollow body hold — 3×25 sec", "Bird dog — 3×10 each side", "Side plank — 3×40 sec each side", "Superman hold — 3×10"],
-        purpose: "Core and upper body strength.",
-      },
-      {
-        day: "Wed", type: "quality", title: "Flat tempo", distance: "~10km",
-        detail: ["Warm up 2km easy.", "25 minutes sustained tempo effort — comfortably hard. You can speak a word or two but not hold a conversation.", "This is your first flat speed session — builds road racing capacity alongside trail fitness.", "Cool down 2km easy."],
-        purpose: "Build flat speed and lactate threshold. Road racing base.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "6km",
-        detail: "Easy Zone 2. Short recovery run — Saturday is 30km.",
-        purpose: "Active recovery. Prepare for long run.",
-      },
-      {
-        day: "Sat", type: "long", title: "Long run", distance: "30km",
-        detail: "First 30km long run. Easy to moderate — this is about time on feet and fuelling practice, not pace. Eat every 40 minutes. Carry enough water. Expect the last 5–6km to feel hard — that's the point. Walk uphills if needed.",
-        purpose: "Race-specific conditioning. Build ultra confidence.",
-      },
-      {
-        day: "Sun", type: "run", title: "Back-to-back easy", distance: "6km",
-        detail: "Very easy the day after 30km. This will feel hard — that's normal and intentional. Walk if needed. The run itself matters more than the pace.",
-        purpose: "Back-to-back ultra conditioning.",
-      },
-    ],
-  },
-  {
-    week: 13, phase: "build", volume: 52, cutback: true,
-    note: "Cutback week. Last 2-session S&C week. Light reps only.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run + S&C B", distance: "8km",
-        detail: "Easy Zone 2. S&C Session B later. This is the last week with two S&C sessions.",
-        purpose: "Maintain routine during cutback.",
-      },
-      {
-        day: "Tue", type: "strength", title: "S&C Session C — final", distance: null,
-        detail: ["Press-up — 3×15", "Renegade row — 3×10 each side", "Pike press-up — 3×10", "Hollow body hold — 3×25 sec", "Bird dog — 3×10 each side", "Side plank — 3×40 sec each side", "Superman hold — 3×10", "Final two-session week — S&C drops to 1x from week 14."],
-        purpose: "Final two-session S&C week.",
-      },
-      {
-        day: "Wed", type: "quality", title: "Light hill reps", distance: "~9km",
-        detail: ["Warm up 2km easy.", "6 × 400m hill reps at aerobic effort — lighter than usual.", "Walk recovery between each rep.", "Cool down 2km easy.", "This is a cutback quality session — don't push hard."],
-        purpose: "Maintain quality stimulus without deep fatigue.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "8km",
-        detail: "Easy Zone 2. Use this week to absorb weeks 11–12. Notice how the body has adapted.",
-        purpose: "Active recovery. Consolidate adaptations.",
-      },
-      {
-        day: "Sat", type: "long", title: "Long run", distance: "20km",
-        detail: "Easy effort. Back down in distance for the cutback — this should feel comfortable after 30km. Run a route you enjoy. Fuel as usual.",
-        purpose: "Easy endurance maintenance during cutback.",
-      },
-      {
-        day: "Sun", type: "run", title: "Back-to-back easy", distance: "7km",
-        detail: "Very easy. Shorter back-to-back this week — keep it relaxed and enjoyable.",
-        purpose: "Back-to-back habit maintenance.",
-      },
-    ],
-  },
-  {
-    week: 14, phase: "build", volume: 62,
-    note: "S&C drops to 1x/week from here. Trail tempo introduced.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run + S&C B", distance: "8km",
-        detail: "Easy Zone 2. S&C Session B later — Monday only from here. No Tuesday session. This frees up recovery capacity as volume peaks.",
-        purpose: "Aerobic base. Lower body strength (1x/week from here).",
-      },
-      {
-        day: "Wed", type: "quality", title: "Trail tempo", distance: "~10km",
-        detail: ["Warm up 2km easy on trail.", "30 minutes sustained trail tempo effort — threshold feel on hilly terrain.", "This is harder than flat tempo — the terrain variation makes it more race-specific.", "Cool down 2km easy.", "Focus on consistent effort, not pace — uphills will slow you down naturally."],
-        purpose: "Race-specific threshold work. Trail fitness.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "6km",
-        detail: "Easy Zone 2. Short recovery before the big weekend.",
-        purpose: "Active recovery.",
-      },
-      {
-        day: "Sat", type: "long", title: "Long run", distance: "32km",
-        detail: "Second 30km+ long run. Moderate effort on trail. Fuel every 35–40 minutes. Practice your exact race-day nutrition strategy. Hilly terrain preferred. The last 5km will be hard — manage your effort in the first half.",
-        purpose: "Peak race-specific conditioning.",
-      },
-      {
-        day: "Sun", type: "run", title: "Back-to-back easy", distance: "6km",
-        detail: "Very easy the day after 32km. Walk sections if needed. The goal is simply to move on tired legs.",
-        purpose: "Ultra back-to-back conditioning.",
-      },
-    ],
-  },
-  {
-    week: 15, phase: "build", volume: 65, peak: true,
-    note: "Peak week. Everything built to this. Race conditions on Saturday where possible.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run + S&C B (final)", distance: "7km",
-        detail: "Easy Zone 2. Final S&C session of the plan — S&C stops after this week. Keep the run easy — a big week is ahead.",
-        purpose: "Aerobic base. Final strength session.",
-      },
-      {
-        day: "Wed", type: "quality", title: "Race pace effort", distance: "~9km",
-        detail: ["Warm up 2km easy.", "25 minutes at target race effort — which for a 47-miler is easy-to-moderate. This should feel sustainable for hours.", "The goal is confidence and feel, not speed.", "Cool down 2km easy.", "Don't go hard — race pace for an ultra is conservative."],
-        purpose: "Race feel and confidence. Not a hard session.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "7km",
-        detail: "Easy Zone 2. Short run before the peak long run. Keep legs fresh — Saturday is the biggest training day of the block.",
-        purpose: "Active recovery. Prepare for peak long run.",
-      },
-      {
-        day: "Sat", type: "long", title: "Peak long run", distance: "37km",
-        detail: "The biggest training run of the plan. Trail and hilly — as close to race conditions as possible. Fuel every 35 minutes, hydrate consistently. Walk the steep climbs — practise your race strategy. The last 8–10km will be hard. Manage your effort carefully in the first half. This run builds massive confidence for September.",
-        purpose: "Peak race-specific conditioning. The most important training session.",
-      },
-      {
-        day: "Sun", type: "run", title: "Easy shakeout", distance: "5km",
-        detail: "Very easy. Likely the hardest this will feel all plan. Short and slow — just keep moving. The fact that you're running after 37km is the whole point.",
-        purpose: "Back-to-back peak conditioning.",
-      },
-    ],
-  },
-  {
-    week: 16, phase: "taper", volume: 55,
-    note: "Taper begins. Volume drops, sharpness maintained. Last hard quality session.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run", distance: "8km",
-        detail: "Easy Zone 2. No S&C from here — allow full physical recovery ahead of race. The legs should start to feel better this week.",
-        purpose: "Aerobic maintenance. Begin taper.",
-      },
-      {
-        day: "Wed", type: "quality", title: "Flat tempo — last hard session", distance: "~9km",
-        detail: ["Warm up 2km easy.", "20 minutes flat tempo — sustained threshold effort.", "This is the last truly hard session before race day. Make it count but don't bury yourself.", "Cool down 2km easy."],
-        purpose: "Maintain sharpness. Final hard quality session.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "8km",
-        detail: "Easy Zone 2. Recovery from tempo. Legs should feel good by now.",
-        purpose: "Active recovery.",
-      },
-      {
-        day: "Sat", type: "long", title: "Long run", distance: "25km",
-        detail: "Easy to moderate. Volume dropping but still a solid run. Confidence building — this should feel manageable after the peak weeks. Fuel as per race day routine.",
-        purpose: "Endurance maintenance. Confidence run.",
-      },
-      {
-        day: "Sun", type: "run", title: "Easy run", distance: "5km",
-        detail: "Very easy. Short recovery run.",
-        purpose: "Active recovery.",
-      },
-    ],
-  },
-  {
-    week: 17, phase: "taper", volume: 45,
-    note: "Feeling fresh. Trust the training. One light quality session only.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy run", distance: "8km",
-        detail: "Easy Zone 2. The legs should be feeling noticeably better this week. Resist the urge to run harder — the fitness is there, trust it.",
-        purpose: "Aerobic maintenance. Deepen taper.",
-      },
-      {
-        day: "Wed", type: "quality", title: "Light tempo ×4", distance: "~8km",
-        detail: ["Warm up 2km easy.", "4 × 3 minutes at tempo effort with 2 minutes easy jog recovery.", "Light — just enough to feel sharp. Nothing that creates fatigue.", "Cool down 2km easy."],
-        purpose: "Maintain sharpness without fatigue.",
-      },
-      {
-        day: "Thu", type: "run", title: "Easy run", distance: "7km",
-        detail: "Easy Zone 2. Keep it relaxed.",
-        purpose: "Aerobic maintenance.",
-      },
-      {
-        day: "Sat", type: "long", title: "Easy long run", distance: "16km",
-        detail: "Easy and relaxed. Run somewhere you enjoy. This should feel like a pleasant outing, not training. The fitness is banked — this run is just keeping the engine ticking over.",
-        purpose: "Easy endurance. Mental freshness.",
-      },
-      {
-        day: "Sun", type: "run", title: "Easy run", distance: "6km",
-        detail: "Easy. Short. Relaxed.",
-        purpose: "Active recovery.",
-      },
-    ],
-  },
-  {
-    week: 18, phase: "taper", volume: 20, raceWeek: true,
-    note: "Keep legs moving, nothing more. Sleep, eat, hydrate. You've done the work.",
-    sessions: [
-      {
-        day: "Mon", type: "run", title: "Easy shakeout", distance: "6km",
-        detail: "Very easy. Just keep the legs moving. No watch pressure, no pace targets. Run somewhere pleasant. The work is done.",
-        purpose: "Maintain feel without creating fatigue.",
-      },
-      {
-        day: "Wed", type: "run", title: "Shakeout + strides", distance: "9km",
-        detail: ["Easy run.", "At the end: 4 × 20 second strides — brisk but not sprinting. Just waking the legs up.", "Strides should feel sharp and effortless.", "Walk 60 seconds between each stride."],
-        purpose: "Sharpen legs before race day.",
-      },
-      {
-        day: "Fri", type: "run", title: "Final shakeout", distance: "5km",
-        detail: "Very easy and relaxed. Last run before race day. Short, light, enjoyable. Don't overthink it — 15–20 minutes easy is all you need. Finish feeling good.",
-        purpose: "Keep legs fresh and loose the day before race.",
-      },
-      {
-        day: "Sat", type: "race", title: "Cotswold Way 47", distance: "76km",
-        detail: ["Start conservative — the first 20 miles should feel easy.", "Fuel every 30–40 minutes from the gun, even if not hungry.", "Walk all significant climbs — save the legs.", "Use every aid station — top up water and food.", "Miles 30+: if stomach turns, switch to salty real food and flat coke.", "Your goal: manage the race well and finish strong."],
-        purpose: "18 weeks building to this moment. Trust the work.",
-      },
-    ],
+    id:"daily", icon:"☀️", title:"Daily Mobility Routine", sub:"Morning or evening · 10 min",
+    intro:"Not tied to a run. Do this daily — morning to prepare the body or evening to wind down. Consistent daily mobility has a bigger long-term impact than occasional deep stretching.",
+    items:[
+      {name:"90/90 hip rotations",duration:"60 sec",cue:"Sit on floor with both legs bent to 90 degrees (one in front, one to the side). Slowly rotate both hips from one side to the other. Move slowly and breathe. Opens internal and external rotation simultaneously."},
+      {name:"World's greatest stretch",duration:"5 reps each side",cue:"Step into a deep lunge. Place same-side hand on the floor inside the front foot. Rotate the other arm to the ceiling. Hold 2 sec at top. Then drive the elbow down toward the ground. 5 reps each side."},
+      {name:"Cat-cow",duration:"10 reps",cue:"All-fours. Breathe in as you drop belly toward floor and look up (cow). Breathe out as you round spine toward ceiling and tuck chin (cat). Move slowly, link to breath."},
+      {name:"Hip circle",duration:"10 reps each direction",cue:"Standing, hands on hips. Draw big slow circles with your pelvis. 10 clockwise, 10 anti-clockwise. Keep upper body as still as possible."},
+      {name:"Thoracic spine opener",duration:"8 reps",cue:"Sit cross-legged. Lace fingers behind head. Breathe in and extend/open the chest upward. Breathe out and round forward. Focus movement in the mid-back, not lower back."},
+      {name:"Ankle circles",duration:"10 reps each direction, each ankle",cue:"Lift one foot off the floor. Draw large, slow circles with the foot — full range of motion. Clockwise and anti-clockwise. Simple but important for trail running ankle health."},
+      {name:"Standing side bend",duration:"30 sec each side",cue:"Stand with feet shoulder-width. Reach one arm overhead and lean to the opposite side. Keep hips square. Feel the stretch along the side body from hip to armpit."},
+    ]
   },
 ];
 
-// ── CONFIG ───────────────────────────────
-const PEAK_VOLUME = 65;
-const PHASE_COLORS = { recovery: '#7eb8a4', base: '#e8a44a', build: '#e05a2b', taper: '#7b9fd4' };
-const TYPE_ICONS   = { run: '🏃', long: '🏔', quality: '⚡', strength: '💪', race: '🏁' };
-const TYPE_COLORS  = { run: '#5a9e7a', long: '#c45f3a', quality: '#d4a843', strength: '#7b8fd4', race: '#e03060' };
-const EFFORT_LEVELS = { run: 2, long: 3, quality: 4, strength: 2, race: 5 };
-const EFFORT_LABELS = { 1:'Very easy', 2:'Easy', 3:'Moderate', 4:'Hard', 5:'Race effort' };
+// ═══════════════════════════
+// MEAL DATA
+// ═══════════════════════════
+const MEALS = {
+  snacks: [
+    {name:"Greek yoghurt + granola + banana",desc:"High protein, fast carbs. Perfect within 30 min of any run. Simple and effective recovery snack.",tags:["protein","carb","quick"],link:null},
+    {name:"Rice cakes with peanut butter and honey",desc:"Easy to digest. Good pre-run option 60–90 min before an easy run. Carries well on the go.",tags:["carb","quick"],link:null},
+    {name:"Protein shake + oat milk + frozen berries",desc:"Quick protein hit post-run when you don't want a full meal. Blend and go.",tags:["protein","quick"],link:null},
+    {name:"Boiled eggs + rice cakes",desc:"Simple, high protein, portable. Good between meals on high-volume training days.",tags:["protein","quick"],link:null},
+    {name:"Medjool dates + almond butter",desc:"Quick-release carbs with healthy fat. Excellent pre-run snack 30–45 min out, or during very long runs as real food alternative to gels.",tags:["carb","race"],link:null},
+    {name:"Overnight oats",desc:"Prep the night before. Oats, oat milk, chia seeds, protein powder, banana. High carb, moderate protein. Good training day breakfast.",tags:["carb","protein"],link:"https://www.bbcgoodfood.com/recipes/overnight-oats"},
+  ],
+  training: [
+    {name:"Salmon + rice + broccoli",desc:"The standard high-performance meal. 35–40g protein from salmon, complex carbs from rice, micronutrients from broccoli. Easy to batch cook.",tags:["protein","carb"],link:null},
+    {name:"Chicken stir-fry with noodles",desc:"Fast to make, high protein, high carb. Use rice noodles for easy digestion. Good training day dinner.",tags:["protein","carb","quick"],link:"https://www.bbcgoodfood.com/recipes/easy-chicken-noodle-stir-fry"},
+    {name:"Pasta with turkey mince bolognese",desc:"Classic carb-loading base. Turkey keeps fat lower than beef. Make a big batch — lasts 3 days in the fridge.",tags:["protein","carb"],link:"https://www.bbcgoodfood.com/recipes/turkey-mince-bolognaise"},
+    {name:"Sweet potato + black bean bowl",desc:"Plant-based option. Sweet potato for carbs and potassium, black beans for protein and iron. Add Greek yoghurt or eggs to hit protein targets.",tags:["carb"],link:null},
+    {name:"Egg fried rice",desc:"Quick, high protein, high carb. Use leftover rice and 3–4 eggs. Add frozen veg and soy sauce. 15 minutes, 40g+ protein if you use enough eggs.",tags:["protein","carb","quick"],link:null},
+    {name:"Tuna jacket potato",desc:"Simple lunch or dinner. Large potato for carbs, tuna for protein. Add Greek yoghurt instead of butter to keep fat lower and protein higher.",tags:["protein","carb","quick"],link:null},
+  ],
+  raceweek: [
+    {name:"Pasta primavera",desc:"Simple pasta with olive oil, garlic, and vegetables. Low residue, high carb, easy to digest. Good race-week dinner from Wednesday onward.",tags:["carb","race"],link:"https://www.bbcgoodfood.com/recipes/pasta-primavera"},
+    {name:"Porridge with banana and honey",desc:"Race morning classic. Oats slow-digesting, banana quick-release, honey for extra carbs. Eat 2.5–3 hours before start.",tags:["carb","race"],link:null},
+    {name:"White rice + chicken + low-fibre veg",desc:"Race eve dinner if you're nervous about digestion. White rice is lower fibre than brown. Keep portions comfortable — don't overeat.",tags:["protein","carb","race"],link:null},
+    {name:"Toast with peanut butter and banana",desc:"Pre-race backup if you're short on time. Simple, fast-digesting, reliable. Eat at least 90 minutes before start.",tags:["carb","race","quick"],link:null},
+  ]
+};
 
+// ═══════════════════════════
+// CONFIG
+// ═══════════════════════════
+const PEAK_VOLUME = 65;
+const PHASE_COLORS = {recovery:'#7eb8a4',base:'#e8a44a',build:'#e05a2b',taper:'#7b9fd4'};
+const TYPE_ICONS   = {run:'🏃',long:'🏔',quality:'⚡',strength:'💪',race:'🏁'};
+const TYPE_COLORS  = {run:'#5a9e7a',long:'#c45f3a',quality:'#d4a843',strength:'#7b8fd4',race:'#e03060'};
+const EFFORT_LEVELS = {run:2,long:3,quality:4,strength:2,race:5};
+const EFFORT_LABELS = {1:'Very easy',2:'Easy',3:'Moderate',4:'Hard',5:'Race effort'};
+const PHASE_ORDER  = ['recovery','base','build','taper'];
+const DOW_MAP = {sun:0,mon:1,tue:2,wed:3,thu:4,fri:5,sat:6};
+
+// ═══════════════════════════
+// STATE
+// ═══════════════════════════
 let current = 0;
 let isAnimating = false;
+let activeDrawerKey = null;
+const STORAGE_KEY = 'flashplan_complete_v2';
 
-// ── BUILD CARD ───────────────────────────
-function buildCard(w) {
-  const phaseColor = PHASE_COLORS[w.phase] || '#888';
-  const volPct = Math.min(100, Math.round((w.volume / PEAK_VOLUME) * 100));
-  let tags = `<span class="phase-tag tag-${w.phase}">${w.phase}</span>`;
-  let specialTags = '';
-  if (w.cutback)  specialTags += `<span class="tag-cutback">Cutback</span>`;
-  if (w.peak)     specialTags += `<span class="tag-peak">Peak Week</span>`;
-  if (w.raceWeek) specialTags += `<span class="tag-race-wk">Race Week</span>`;
+function getCompleted(){ try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}')}catch{return{}} }
+function setCompleted(o){ localStorage.setItem(STORAGE_KEY,JSON.stringify(o)) }
+function isManualComplete(wIdx,sIdx){ return !!getCompleted()[`${wIdx}_${sIdx}`] }
+function toggleManual(wIdx,sIdx){ const c=getCompleted(),k=`${wIdx}_${sIdx}`;c[k]=!c[k];setCompleted(c);return c[k]; }
 
-  const sessionRows = w.sessions.map((s, si) => {
-    const icon  = TYPE_ICONS[s.type]   || '📋';
-    const col   = TYPE_COLORS[s.type]  || '#888';
-    const effort = EFFORT_LEVELS[s.type] || 1;
-    const dots  = Array.from({length:5}, (_,i) =>
-      `<div class="effort-dot ${i < effort ? 'filled' : ''}" style="color:${col}"></div>`
-    ).join('');
-    let rowClass = 'session-row';
-    if (s.type === 'long')    rowClass += ' highlight-long';
-    if (s.type === 'quality') rowClass += ' highlight-quality';
-    if (s.type === 'race')    rowClass += ' highlight-race';
-    const distEl = s.distance ? `<span class="session-dist" style="color:${col}">${s.distance}</span>` : '';
+// ═══════════════════════════
+// DATE HELPERS
+// ═══════════════════════════
+function weekStartDate(wIdx){ const d=new Date(WEEK_START);d.setDate(d.getDate()+wIdx*7);return d; }
+function formatWeekDate(wIdx){ return weekStartDate(wIdx).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}); }
+function formatWeekShort(wIdx){ return weekStartDate(wIdx).toLocaleDateString('en-GB',{day:'numeric',month:'short'}); }
 
-    return `<div class="${rowClass}" onclick="openDrawer(${w.week-1}, ${si}, event)">
+function sessionDate(wIdx, s){
+  const wStart = weekStartDate(wIdx);
+  const dowVal = DOW_MAP[s.day.toLowerCase()] ?? 0;
+  const offset = (dowVal - 1 + 7) % 7; // Mon=0 offset
+  const d = new Date(wStart);
+  d.setDate(wStart.getDate() + offset);
+  return d;
+}
+
+function isSessionPast(wIdx, s){
+  const today = new Date(); today.setHours(0,0,0,0);
+  return sessionDate(wIdx, s) < today;
+}
+
+function isSessionToday(wIdx, s){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const sd = sessionDate(wIdx, s); sd.setHours(0,0,0,0);
+  return sd.getTime() === today.getTime();
+}
+
+// Auto-complete: past = always complete; today = check manual storage
+function isSessionComplete(wIdx, sIdx){
+  const s = WEEKS[wIdx].sessions[sIdx];
+  if (isSessionPast(wIdx, s)) return true;
+  if (isSessionToday(wIdx, s)) return isManualComplete(wIdx, sIdx);
+  return false;
+}
+
+function getCurrentWeekIdx(){
+  const today = new Date(); today.setHours(0,0,0,0);
+  for(let i=0;i<WEEKS.length;i++){
+    const start = weekStartDate(i);
+    const end = new Date(start); end.setDate(start.getDate()+6);
+    if(today>=start && today<=end) return i;
+  }
+  return today < weekStartDate(0) ? 0 : WEEKS.length-1;
+}
+
+function weekCompletionPct(wIdx){
+  const sessions = WEEKS[wIdx].sessions||[];
+  if(!sessions.length) return 100;
+  const done = sessions.filter((_,si)=>isSessionComplete(wIdx,si)).length;
+  return Math.round((done/sessions.length)*100);
+}
+
+// ═══════════════════════════
+// TICKER
+// ═══════════════════════════
+function updateTicker(){
+  const today=new Date();today.setHours(0,0,0,0);
+  const days=Math.ceil((RACE_DATE-today)/86400000);
+  const el=document.getElementById('race-ticker');
+  if(days>0) el.innerHTML=`<strong>${days}</strong>d to race`;
+  else if(days===0) el.innerHTML=`<strong>Race day!</strong>`;
+  else el.textContent='Race complete';
+}
+
+// ═══════════════════════════
+// RING SVG
+// ═══════════════════════════
+function ringHtml(pct,phaseColor,size=32,sw=2.5){
+  const r=(size/2)-sw; const circ=2*Math.PI*r;
+  const offset=circ-(pct/100)*circ;
+  const col=pct===100?'#4caf7d':phaseColor;
+  return `<div class="completion-ring" style="width:${size}px;height:${size}px">
+    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform:rotate(-90deg)">
+      <circle class="ring-bg" cx="${size/2}" cy="${size/2}" r="${r}"/>
+      <circle class="ring-fill" cx="${size/2}" cy="${size/2}" r="${r}" stroke="${col}"
+        stroke-dasharray="${circ}" stroke-dashoffset="${offset}" stroke-width="${sw}" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div class="ring-label" style="font-size:${size<36?8:9}px">${pct}%</div>
+  </div>`;
+}
+
+// ═══════════════════════════
+// BUILD CARD
+// ═══════════════════════════
+function buildCard(wIdx){
+  const w=WEEKS[wIdx];
+  const pc=PHASE_COLORS[w.phase]||'#888';
+  const volPct=Math.min(100,Math.round((w.volume/PEAK_VOLUME)*100));
+  let tags=`<span class="phase-tag tag-${w.phase}">${w.phase}</span>`;
+  let special='';
+  if(w.cutback) special+=`<span class="tag-cutback">Cutback</span>`;
+  if(w.peak)    special+=`<span class="tag-peak">Peak Week</span>`;
+  if(w.raceWeek)special+=`<span class="tag-race-wk">Race Week</span>`;
+
+  const rows=w.sessions.map((s,si)=>{
+    const icon=TYPE_ICONS[s.type]||'📋';
+    const col=TYPE_COLORS[s.type]||'#888';
+    const effort=EFFORT_LEVELS[s.type]||1;
+    const dots=Array.from({length:5},(_,i)=>`<div class="effort-dot ${i<effort?'filled':''}" style="color:${col}"></div>`).join('');
+    const past=isSessionPast(wIdx,s);
+    const complete=isSessionComplete(wIdx,si);
+    let rc='session-row';
+    if(s.type==='long')    rc+=' highlight-long';
+    if(s.type==='quality') rc+=' highlight-quality';
+    if(s.type==='race')    rc+=' highlight-race';
+    if(past&&!complete)    rc+=' past-session';
+    if(complete)           rc+=' completed';
+    const dist=s.distance?`<span class="session-dist" style="color:${col}">${s.distance}</span>`:'';
+    return `<div class="${rc}" onclick="openDrawer(${wIdx},${si},event)">
       <div class="session-icon">${icon}</div>
       <div class="session-info">
         <div class="session-day">${s.day}</div>
         <div class="session-title">${s.title}</div>
       </div>
-      ${distEl}
+      ${dist}
       <div class="effort-dots">${dots}</div>
+      <div class="session-done-tick">✓</div>
     </div>`;
   }).join('');
 
-  const noteHtml = w.note ? `<div class="week-note">${w.note}</div>` : '';
-
   return `
     <div class="card-top">
-      <div>
-        <div style="margin-bottom:2px">${tags}</div>
-        ${specialTags ? `<div class="special-tags">${specialTags}</div>` : ''}
-      </div>
+      <div><div style="margin-bottom:2px">${tags}</div>${special?`<div class="special-tags">${special}</div>`:''}</div>
     </div>
     <div class="week-num">W${w.week}</div>
+    <div class="week-date-line">Week of ${formatWeekDate(wIdx)}</div>
     <div class="volume-section">
       <div class="volume-row">
-        <span class="volume-num" style="color:${phaseColor}">${w.volume}</span>
+        <span class="volume-num" style="color:${pc}">${w.volume}</span>
         <span class="volume-unit">km</span>
         <span class="volume-label">${volPct}% of peak</span>
       </div>
-      <div class="vol-bar-track">
-        <div class="vol-bar-fill" style="width:${volPct}%;background:${phaseColor}"></div>
-      </div>
+      <div class="vol-bar-track"><div class="vol-bar-fill" style="width:${volPct}%;background:${pc}"></div></div>
     </div>
     <hr class="divider">
     <div class="sessions-label">Sessions — tap for detail</div>
-    <div class="sessions-list">${sessionRows}</div>
-    ${noteHtml}
+    <div class="sessions-list">${rows}</div>
+    ${w.note?`<div class="week-note">${w.note}</div>`:''}
   `;
 }
 
-function renderDeck() {
-  const deck = document.getElementById('deck');
-  deck.innerHTML = '';
-  WEEKS.forEach((w, i) => {
-    const el = document.createElement('div');
-    el.className = 'card' + (i === current ? ' active' : '');
-    el.id = `card-${i}`;
-    el.innerHTML = buildCard(w);
+// ═══════════════════════════
+// RENDER DECK
+// ═══════════════════════════
+function renderDeck(){
+  const deck=document.getElementById('deck');
+  deck.innerHTML='';
+  WEEKS.forEach((_,i)=>{
+    const el=document.createElement('div');
+    el.className='card'+(i===current?' active':'');
+    el.id=`card-${i}`;
+    el.innerHTML=buildCard(i);
     deck.appendChild(el);
   });
-  if (current === 0) {
-    const hint = document.createElement('div');
-    hint.className = 'swipe-hint';
-    hint.textContent = '← swipe or use arrows →';
-    deck.appendChild(hint);
+  if(current===0){
+    const h=document.createElement('div');
+    h.className='swipe-hint';
+    h.textContent='← swipe or use arrows →';
+    deck.appendChild(h);
   }
   updateUI();
 }
 
-function updateUI() {
-  const w = WEEKS[current];
-  const phaseColor = PHASE_COLORS[w.phase] || '#888';
-  const pct = Math.round(((current + 1) / WEEKS.length) * 100);
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-fill').style.background = phaseColor;
-  document.getElementById('bg-glow').style.background = phaseColor;
-  document.getElementById('counter-cur').textContent = current + 1;
-  document.getElementById('counter-tot').textContent = WEEKS.length;
-  document.getElementById('btn-prev').disabled = current === 0;
-  document.getElementById('btn-next').disabled = current === WEEKS.length - 1;
+function refreshCard(wIdx){
+  const el=document.getElementById(`card-${wIdx}`);
+  if(el) el.innerHTML=buildCard(wIdx);
 }
 
-function navigate(dir) {
-  if (isAnimating) return;
-  const next = current + dir;
-  if (next < 0 || next >= WEEKS.length) return;
-  isAnimating = true;
-  const currentCard = document.getElementById(`card-${current}`);
-  const nextCard    = document.getElementById(`card-${next}`);
-  nextCard.style.transition = 'none';
-  nextCard.style.transform  = dir > 0 ? 'translateX(80px) scale(0.96)' : 'translateX(-80px) scale(0.96)';
-  nextCard.style.opacity    = '0';
-  nextCard.classList.remove('active');
-  nextCard.getBoundingClientRect();
-  currentCard.style.transition = '';
-  currentCard.classList.remove('active');
-  currentCard.classList.add(dir > 0 ? 'exit-left' : 'exit-right');
-  nextCard.style.transition = '';
-  nextCard.style.transform  = '';
-  nextCard.style.opacity    = '';
-  nextCard.classList.add('active');
-  current = next;
-  updateUI();
-  setTimeout(() => {
-    currentCard.classList.remove('exit-left', 'exit-right');
-    isAnimating = false;
-  }, 400);
+function updateUI(){
+  const w=WEEKS[current];
+  const pc=PHASE_COLORS[w.phase]||'#888';
+  const pct=Math.round(((current+1)/WEEKS.length)*100);
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('progress-fill').style.background=pc;
+  document.getElementById('bg-glow').style.background=pc;
+  document.getElementById('counter-cur').textContent=current+1;
+  document.getElementById('counter-tot').textContent=WEEKS.length;
+  document.getElementById('btn-prev').disabled=current===0;
+  document.getElementById('btn-next').disabled=current===WEEKS.length-1;
 }
 
-// ── DRAWER ───────────────────────────────
-function openDrawer(weekIdx, sessionIdx, e) {
+// ═══════════════════════════
+// NAVIGATE
+// ═══════════════════════════
+function navigate(dir){
+  if(isAnimating) return;
+  const next=current+dir;
+  if(next<0||next>=WEEKS.length) return;
+  isAnimating=true;
+  const cc=document.getElementById(`card-${current}`);
+  const nc=document.getElementById(`card-${next}`);
+  nc.style.transition='none';
+  nc.style.transform=dir>0?'translateX(80px) scale(0.96)':'translateX(-80px) scale(0.96)';
+  nc.style.opacity='0';
+  nc.classList.remove('active');
+  nc.getBoundingClientRect();
+  cc.style.transition='';cc.classList.remove('active');
+  cc.classList.add(dir>0?'exit-left':'exit-right');
+  nc.style.transition='';nc.style.transform='';nc.style.opacity='';
+  nc.classList.add('active');
+  current=next; updateUI();
+  setTimeout(()=>{cc.classList.remove('exit-left','exit-right');isAnimating=false;},400);
+}
+
+function jumpTo(idx){
+  if(idx===current){closeWeekMenu();return;}
+  const dir=idx>current?1:-1;
+  const cc=document.getElementById(`card-${current}`);
+  const nc=document.getElementById(`card-${idx}`);
+  nc.style.transition='none';
+  nc.style.transform=dir>0?'translateX(80px) scale(0.96)':'translateX(-80px) scale(0.96)';
+  nc.style.opacity='0';
+  nc.classList.remove('active');
+  nc.getBoundingClientRect();
+  cc.style.transition='transform 0.3s,opacity 0.3s';cc.classList.remove('active');
+  cc.classList.add(dir>0?'exit-left':'exit-right');
+  nc.style.transition='transform 0.38s cubic-bezier(0.4,0,0.2,1),opacity 0.38s cubic-bezier(0.4,0,0.2,1)';
+  nc.style.transform='';nc.style.opacity='';nc.classList.add('active');
+  current=idx; updateUI();
+  setTimeout(()=>{cc.classList.remove('exit-left','exit-right');},400);
+  closeWeekMenu();
+}
+
+// ═══════════════════════════
+// WEEK MENU
+// ═══════════════════════════
+function buildWeekMenu(){
+  const body=document.getElementById('week-menu-body');
+  const cw=getCurrentWeekIdx();
+  let html='';
+  PHASE_ORDER.forEach(phase=>{
+    const weeks=WEEKS.map((w,i)=>({...w,idx:i})).filter(w=>w.phase===phase);
+    if(!weeks.length) return;
+    const pc=PHASE_COLORS[phase];
+    html+=`<div class="phase-group"><div class="phase-group-label" style="color:${pc}">${phase.charAt(0).toUpperCase()+phase.slice(1)}</div>`;
+    weeks.forEach(w=>{
+      const isCur=w.idx===cw;
+      const pct=weekCompletionPct(w.idx);
+      let tags='';
+      if(w.cutback)  tags+=`<span class="tag-cutback" style="font-size:9px;padding:2px 6px">Cutback</span>`;
+      if(w.peak)     tags+=`<span class="tag-peak" style="font-size:9px;padding:2px 6px">Peak</span>`;
+      if(w.raceWeek) tags+=`<span class="tag-race-wk" style="font-size:9px;padding:2px 6px">Race Week</span>`;
+      html+=`<div class="week-menu-item ${isCur?'current-wk':''}" onclick="jumpTo(${w.idx})" id="menu-item-${w.idx}">
+        <div class="week-menu-num ${isCur?'current-wk-num':''}">${w.week}</div>
+        <div class="week-menu-info">
+          <div class="week-menu-date">${formatWeekShort(w.idx)}</div>
+          <div class="week-menu-vol">${w.volume}km${w.sessions?.length?` · ${w.sessions.length} sessions`:''}</div>
+          ${tags?`<div class="week-menu-tags">${tags}</div>`:''}
+        </div>
+        ${ringHtml(pct,pc)}
+      </div>`;
+    });
+    html+=`</div>`;
+  });
+  body.innerHTML=html;
+  setTimeout(()=>{
+    const el=document.getElementById(`menu-item-${cw}`);
+    if(el) el.scrollIntoView({block:'center',behavior:'smooth'});
+  },100);
+}
+
+function toggleWeekMenu(){
+  const p=document.getElementById('week-menu-panel');
+  if(p.classList.contains('open')){closeWeekMenu();}
+  else{buildWeekMenu();p.classList.add('open');document.getElementById('mb-weeks').classList.add('active');}
+}
+function closeWeekMenu(){
+  document.getElementById('week-menu-panel').classList.remove('open');
+  document.getElementById('mb-weeks').classList.remove('active');
+}
+let menuTS=0;
+document.getElementById('week-menu-content').addEventListener('touchstart',e=>{menuTS=e.touches[0].clientY;},{passive:true});
+document.getElementById('week-menu-content').addEventListener('touchend',e=>{if(e.changedTouches[0].clientY-menuTS>60)closeWeekMenu();},{passive:true});
+
+// ═══════════════════════════
+// DRAWER
+// ═══════════════════════════
+function openDrawer(wIdx,si,e){
   e.stopPropagation();
-  const w = WEEKS[weekIdx];
-  const s = w.sessions[sessionIdx];
-  const col    = TYPE_COLORS[s.type]   || '#888';
-  const icon   = TYPE_ICONS[s.type]    || '📋';
-  const effort = EFFORT_LEVELS[s.type] || 1;
-
-  document.getElementById('d-icon').textContent  = icon;
-  document.getElementById('d-day').textContent   = s.day;
-  document.getElementById('d-day').style.color   = col;
-  document.getElementById('d-title').textContent = s.title;
-  document.getElementById('d-title').style.color = col;
-
-  const distEl = document.getElementById('d-dist');
-  if (s.distance) {
-    distEl.textContent   = s.distance;
-    distEl.style.color   = col;
-    distEl.style.display = 'block';
+  activeDrawerKey=`${wIdx}_${si}`;
+  const s=WEEKS[wIdx].sessions[si];
+  const col=TYPE_COLORS[s.type]||'#888';
+  const icon=TYPE_ICONS[s.type]||'📋';
+  const effort=EFFORT_LEVELS[s.type]||1;
+  document.getElementById('d-icon').textContent=icon;
+  document.getElementById('d-day').textContent=s.day;
+  document.getElementById('d-day').style.color=col;
+  document.getElementById('d-title').textContent=s.title;
+  document.getElementById('d-title').style.color=col;
+  const distEl=document.getElementById('d-dist');
+  if(s.distance){distEl.textContent=s.distance;distEl.style.color=col;distEl.style.display='block';}
+  else{distEl.style.display='none';}
+  document.getElementById('d-effort-fill').style.width=(effort/5*100)+'%';
+  document.getElementById('d-effort-fill').style.background=col;
+  document.getElementById('d-effort-val').textContent=EFFORT_LABELS[effort]||'';
+  document.getElementById('d-effort-val').style.color=col;
+  const detailEl=document.getElementById('d-detail');
+  if(Array.isArray(s.detail)){
+    detailEl.innerHTML=`<div class="drawer-steps">${s.detail.map((step,i)=>`<div class="drawer-step"><div class="drawer-step-num" style="color:${col}">${i+1}</div><div class="drawer-step-text">${step}</div></div>`).join('')}</div>`;
   } else {
-    distEl.style.display = 'none';
+    detailEl.innerHTML=`<div class="drawer-detail">${s.detail||''}</div>`;
   }
+  const pEl=document.getElementById('d-purpose');
+  if(s.purpose){pEl.textContent=s.purpose;pEl.style.borderColor=col;pEl.style.display='block';}
+  else{pEl.style.display='none';}
 
-  // Effort bar
-  document.getElementById('d-effort-fill').style.width      = (effort / 5 * 100) + '%';
-  document.getElementById('d-effort-fill').style.background = col;
-  document.getElementById('d-effort-val').textContent       = EFFORT_LABELS[effort] || '';
-  document.getElementById('d-effort-val').style.color       = col;
-
-  // Detail
-  const detailEl = document.getElementById('d-detail');
-  if (Array.isArray(s.detail)) {
-    detailEl.innerHTML = `<div class="drawer-steps">${s.detail.map((step, i) =>
-      `<div class="drawer-step">
-        <div class="drawer-step-num" style="color:${col}">${i+1}</div>
-        <div class="drawer-step-text">${step}</div>
-      </div>`
-    ).join('')}</div>`;
+  // Show/hide complete button — only for today's sessions
+  const today = isSessionToday(wIdx, s);
+  const past  = isSessionPast(wIdx, s);
+  const btn   = document.getElementById('d-complete-btn');
+  if(past){
+    btn.style.display='none'; // auto-complete, no button needed
+  } else if(today){
+    btn.style.display='flex';
+    updateCompleteBtn(wIdx,si);
   } else {
-    detailEl.innerHTML = `<div class="drawer-detail">${s.detail || ''}</div>`;
-  }
-
-  // Purpose
-  const purposeEl = document.getElementById('d-purpose');
-  if (s.purpose) {
-    purposeEl.textContent     = s.purpose;
-    purposeEl.style.borderColor = col;
-    purposeEl.style.display   = 'block';
-  } else {
-    purposeEl.style.display   = 'none';
+    btn.style.display='none'; // future session
   }
 
   document.getElementById('drawer-overlay').classList.add('open');
   document.getElementById('drawer').classList.add('open');
 }
 
-function closeDrawer() {
-  document.getElementById('drawer-overlay').classList.remove('open');
-  document.getElementById('drawer').classList.remove('open');
+function updateCompleteBtn(wIdx,si){
+  const done=isManualComplete(wIdx,si);
+  const btn=document.getElementById('d-complete-btn');
+  document.getElementById('d-complete-icon').textContent=done?'✓':'○';
+  document.getElementById('d-complete-label').textContent=done?'Completed!':'Mark as complete';
+  btn.classList.toggle('done',done);
 }
 
-// Close drawer on swipe down
-let drawerTouchStart = 0;
-document.getElementById('drawer').addEventListener('touchstart', e => {
-  drawerTouchStart = e.touches[0].clientY;
-}, { passive: true });
-document.getElementById('drawer').addEventListener('touchend', e => {
-  const dy = e.changedTouches[0].clientY - drawerTouchStart;
-  if (dy > 60) closeDrawer();
-}, { passive: true });
+function toggleSessionComplete(){
+  if(!activeDrawerKey) return;
+  const [wIdx,si]=activeDrawerKey.split('_').map(Number);
+  const s=WEEKS[wIdx].sessions[si];
+  if(!isSessionToday(wIdx,s)) return; // safety check
+  toggleManual(wIdx,si);
+  updateCompleteBtn(wIdx,si);
+  refreshCard(wIdx);
+}
 
-// ── KEYBOARD ─────────────────────────────
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape')      closeDrawer();
-  if (e.key === 'ArrowLeft')   navigate(-1);
-  if (e.key === 'ArrowRight')  navigate(1);
+function closeDrawer(){
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
+  activeDrawerKey=null;
+}
+let dTS=0;
+document.getElementById('drawer').addEventListener('touchstart',e=>{dTS=e.touches[0].clientY;},{passive:true});
+document.getElementById('drawer').addEventListener('touchend',e=>{if(e.changedTouches[0].clientY-dTS>60)closeDrawer();},{passive:true});
+
+// ═══════════════════════════
+// SUMMARY PAGE
+// ═══════════════════════════
+function renderSummary(){
+  const cw=getCurrentWeekIdx();
+  const today=new Date();today.setHours(0,0,0,0);
+  const daysToRace=Math.max(0,Math.ceil((RACE_DATE-today)/86400000));
+  const totalPlanned=WEEKS.reduce((a,w)=>a+w.volume,0);
+  const completedKm=WEEKS.slice(0,cw).reduce((a,w)=>a+w.volume,0);
+  const planPct=Math.round((completedKm/totalPlanned)*100);
+  const weeksLeft=WEEKS.length-cw-1;
+
+  // Stats
+  document.getElementById('summary-stats').innerHTML=`
+    <div class="summary-stat">
+      <div class="summary-stat-label">Days to race</div>
+      <div class="summary-stat-val" style="color:var(--race)">${daysToRace}</div>
+      <div class="summary-stat-sub">19 Sep 2026</div>
+    </div>
+    <div class="summary-stat">
+      <div class="summary-stat-label">Current week</div>
+      <div class="summary-stat-val">${cw+1}</div>
+      <div class="summary-stat-sub">of 18 · ${WEEKS[cw].phase}</div>
+    </div>
+    <div class="summary-stat">
+      <div class="summary-stat-label">Completed km</div>
+      <div class="summary-stat-val" style="color:var(--green)">${completedKm}</div>
+      <div class="summary-stat-sub">of ${totalPlanned}km total</div>
+    </div>
+    <div class="summary-stat">
+      <div class="summary-stat-label">Weeks remaining</div>
+      <div class="summary-stat-val">${weeksLeft}</div>
+      <div class="summary-stat-sub">after this week</div>
+    </div>
+  `;
+
+  // Big ring
+  const bigR=document.getElementById('big-ring');
+  const r=60,sw=6,circ=2*Math.PI*r;
+  const offset=circ-(planPct/100)*circ;
+  bigR.innerHTML=`
+    <svg width="140" height="140" viewBox="0 0 140 140" style="transform:rotate(-90deg)">
+      <circle fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="${sw}" cx="70" cy="70" r="${r}"/>
+      <circle fill="none" stroke="var(--green)" stroke-width="${sw}" stroke-linecap="round"
+        cx="70" cy="70" r="${r}" stroke-dasharray="${circ}" stroke-dashoffset="${offset}"/>
+    </svg>
+    <div class="big-ring-label">
+      <div class="big-ring-pct">${planPct}%</div>
+      <div class="big-ring-sub">Plan complete</div>
+    </div>`;
+
+  // Bar chart
+  const maxVol=Math.max(...WEEKS.map(w=>w.volume));
+  const chartHeight=100;
+  let bars='';
+  WEEKS.forEach((w,i)=>{
+    const pc=PHASE_COLORS[w.phase]||'#888';
+    const h=Math.round((w.volume/maxVol)*chartHeight);
+    const isPast=i<cw;
+    const isCur=i===cw;
+    const isProj=i>cw;
+    const classes=`bar-fill${isCur?' bar-current':''}${isProj?' bar-projected':''}`;
+    bars+=`<div class="bar-col">
+      <div class="${classes}" style="height:${h}px;background:${pc};${isProj?'border:1px dashed '+pc:''}">
+        <div class="bar-tooltip">${w.volume}km · W${w.week}</div>
+      </div>
+      <div class="bar-wk">${w.week}</div>
+    </div>`;
+  });
+  document.getElementById('bar-chart').innerHTML=bars;
+
+  // Cumulative line chart (SVG)
+  let cum=0;
+  const points=WEEKS.map((w,i)=>{cum+=w.volume;return{x:i,y:cum,past:i<=cw};});
+  const maxCum=points[points.length-1].y;
+  const cw2=560,ch2=80;
+  const ptStr=points.map(p=>{
+    const x=Math.round((p.x/(WEEKS.length-1))*cw2);
+    const y=Math.round(ch2-(p.y/maxCum)*ch2);
+    return `${x},${y}`;
+  }).join(' ');
+  const pastPts=points.filter(p=>p.past);
+  const pastStr=pastPts.map(p=>{
+    const x=Math.round((p.x/(WEEKS.length-1))*cw2);
+    const y=Math.round(ch2-(p.y/maxCum)*ch2);
+    return `${x},${y}`;
+  }).join(' ');
+  document.getElementById('cum-chart').innerHTML=`
+    <svg viewBox="0 0 ${cw2} ${ch2}" preserveAspectRatio="none" style="width:100%;height:100%">
+      <polyline points="${ptStr}" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+      ${pastStr?`<polyline points="${pastStr}" fill="none" stroke="var(--green)" stroke-width="2.5"/>`:''}
+    </svg>`;
+}
+
+// ═══════════════════════════
+// STRETCHES PAGE
+// ═══════════════════════════
+function renderStretches(){
+  let html='';
+  STRETCHES.forEach(r=>{
+    html+=`<div class="stretch-accordion" id="sacc-${r.id}">
+      <div class="stretch-acc-header" onclick="toggleStretchAcc('sacc-${r.id}')">
+        <div class="stretch-acc-icon">${r.icon}</div>
+        <div class="stretch-info">
+          <div class="stretch-acc-title">${r.title}</div>
+          <div class="stretch-acc-sub">${r.sub}</div>
+        </div>
+        <div class="stretch-acc-arrow">▾</div>
+      </div>
+      <div class="stretch-acc-body">
+        <div style="padding:14px 16px 0;font-size:12px;color:var(--text2);font-style:italic;line-height:1.5;border-bottom:1px solid var(--border);padding-bottom:12px">${r.intro}</div>
+        ${r.items.map((s,i)=>`<div class="stretch-item">
+          <div class="stretch-num">${i+1}</div>
+          <div class="stretch-info">
+            <div class="stretch-name">${s.name}</div>
+            <div class="stretch-duration">${s.duration}</div>
+            <div class="stretch-cue">${s.cue}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  });
+  document.getElementById('stretch-content').innerHTML=html;
+}
+
+function toggleStretchAcc(id){
+  document.getElementById(id).classList.toggle('open');
+}
+
+// ═══════════════════════════
+// MEALS PAGE
+// ═══════════════════════════
+function renderMeals(){
+  function mealCards(items){
+    return items.map(m=>{
+      const tags=m.tags.map(t=>`<span class="meal-tag tag-${t}">${t}</span>`).join('');
+      const link=m.link?`<a class="meal-link" href="${m.link}" target="_blank" rel="noopener">Recipe ↗</a>`:'';
+      return `<div class="meal-item">
+        <div class="meal-name">${m.name}</div>
+        <div class="meal-tags">${tags}</div>
+        <div class="meal-desc">${m.desc}</div>
+        ${link}
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('meals-content').innerHTML=`
+    <div class="meal-section-title">Snacks & Recovery</div>
+    ${mealCards(MEALS.snacks)}
+    <div class="meal-section-title">Training Meals</div>
+    ${mealCards(MEALS.training)}
+    <div class="meal-section-title">Race Week</div>
+    ${mealCards(MEALS.raceweek)}
+  `;
+}
+
+// ═══════════════════════════
+// VIEWS
+// ═══════════════════════════
+const ALL_VIEWS=['plan','summary','stretch','nutrition'];
+function showView(v){
+  document.getElementById('view-plan').style.display=v==='plan'?'':'none';
+  ['summary','stretch','nutrition'].forEach(id=>{
+    document.getElementById('view-'+id).classList.toggle('open',v===id);
+  });
+  ALL_VIEWS.forEach(id=>{
+    document.getElementById('mb-'+id).classList.toggle('active',id===v);
+  });
+  if(v==='summary')   renderSummary();
+  if(v==='stretch')   renderStretches();
+  if(v==='nutrition') renderMeals();
+  if(v==='plan')      updateUI();
+}
+
+function switchTab(group,tab,btn){
+  const parent=btn.closest('.full-inner')||document.getElementById('view-nutrition').querySelector('.full-inner');
+  parent.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  parent.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(group+'-'+tab).classList.add('active');
+}
+
+// ═══════════════════════════
+// KEYBOARD + TOUCH
+// ═══════════════════════════
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeDrawer();closeWeekMenu();}
+  if(e.key==='ArrowLeft')  navigate(-1);
+  if(e.key==='ArrowRight') navigate(1);
 });
+let tsX=0,tsY=0;
+document.addEventListener('touchstart',e=>{tsX=e.touches[0].clientX;tsY=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchend',e=>{
+  if(document.getElementById('drawer').classList.contains('open')) return;
+  if(document.getElementById('week-menu-panel').classList.contains('open')) return;
+  if(!document.getElementById('view-plan').style.display!=='none') return;
+  const dx=e.changedTouches[0].clientX-tsX;
+  const dy=e.changedTouches[0].clientY-tsY;
+  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40) navigate(dx<0?1:-1);
+},{passive:true});
 
-// ── TOUCH SWIPE ──────────────────────────
-let touchStartX = 0, touchStartY = 0;
-document.addEventListener('touchstart', e => {
-  touchStartX = e.touches[0].clientX;
-  touchStartY = e.touches[0].clientY;
-}, { passive: true });
-document.addEventListener('touchend', e => {
-  if (document.getElementById('drawer').classList.contains('open')) return;
-  const dx = e.changedTouches[0].clientX - touchStartX;
-  const dy = e.changedTouches[0].clientY - touchStartY;
-  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) navigate(dx < 0 ? 1 : -1);
-}, { passive: true });
-
-// ── INIT ─────────────────────────────────
+// ═══════════════════════════
+// INIT
+// ═══════════════════════════
+current=getCurrentWeekIdx();
+updateTicker();
 renderDeck();
 </script>
 </body>
