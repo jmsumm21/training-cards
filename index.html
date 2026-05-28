@@ -407,6 +407,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
     <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
     <div class="drawer-section-label">Session Detail</div>
     <div id="d-detail"></div>
+    <div id="d-sc-detail" style="display:none"></div>
     <div class="drawer-purpose" id="d-purpose"></div>
     <button class="drawer-complete-btn" id="d-complete-btn" onclick="toggleSessionComplete()">
       <span id="d-complete-icon">○</span>
@@ -422,14 +423,22 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 const RACE_DATE  = new Date('2026-09-19');
 const WEEK_START = new Date('2026-05-18');
 
+// ═══════════════════════════
+// S&C EXERCISE LISTS
+// Referenced by combined run+S&C sessions via scDetail
+// ═══════════════════════════
+const SC_A = ["Bodyweight squat — 3×12","Glute bridge — 3×15","Reverse lunge — 3×10 each leg","Dead bug — 3×8 each side","Calf raise — 3×20","Plank — 3×30 sec","Rest 60–90 sec between sets."];
+const SC_B = ["Bulgarian split squat — 3×10 each leg","Single leg glute bridge — 3×12 each leg","Lateral lunge — 3×10 each leg","Nordic hamstring curl (assisted) — 3×8","Single leg calf raise — 3×15 each leg","Side-lying hip abduction — 3×15 each side","Rest 60–90 sec between sets."];
+const SC_C = ["Press-up — 3×15 (or to failure)","Renegade row — 3×10 each side","Pike press-up — 3×10","Hollow body hold — 3×20–25 sec","Bird dog — 3×10 each side","Side plank — 3×30–40 sec each side","Superman hold — 3×10","Rest 60 sec between sets."];
+
 const WEEKS = [
   {week:1,phase:"recovery",volume:13,note:"Week 1 complete. Two easy runs post-UTA50 in Australia. Recovery priority.",sessions:[
     {day:"Wed",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2 effort. Conversational pace throughout — if you can't hold a conversation, slow down. Focus on getting the legs moving after the race.",purpose:"Re-establish routine. Flush post-race fatigue."},
     {day:"Thu",type:"run",title:"Easy run",distance:"5km",detail:"Another easy Zone 2 run. No watch pressure. Run by feel — if it feels hard, walk. The goal this week is simply to move.",purpose:"Aerobic stimulus without stress. Begin recovery arc."},
   ]},
   {week:2,phase:"recovery",volume:23,note:"Back from Australia. All Zone 2 — conversational pace throughout.",sessions:[
-    {day:"Mon",type:"run",title:"Easy run",distance:"8.25km",detail:"Easy Zone 2. Final day in Australia, enjoy it. Flat route preferred.",purpose:"Continued recovery."},
-    {day:"Thu",type:"run",title:"Easy run",distance:"5.5km",detail:"Short and easy, post 24h flight. Focus on feel, not pace.",purpose:"Maintain easy aerobic stimulus mid-week."},
+    {day:"Mon",type:"run",title:"Easy run",distance:"8.25km",detail:"Easy Zone 2. Last run in Australia, enjoy it but keep it light. Flat route preferred.",purpose:"Keep the legs moving."},
+    {day:"Thu",type:"run",title:"Easy run",distance:"5.5km",detail:"Short and easy. First run post 24h flight. Focus on feel, not pace.",purpose:"Settle in post return to UK."},
     {day:"Sat",type:"long",title:"Easy long run",distance:"9.25km",detail:"Longest run of the week but still fully easy. If legs feel heavy, back off — recovery is the priority.",purpose:"Time on feet. Aerobic base without fatigue accumulation."},
   ]},
   {week:3,phase:"recovery",volume:30,note:"Final recovery week. First S&C introduced — form focus only.",sessions:[
@@ -440,55 +449,55 @@ const WEEKS = [
     {day:"Sat",type:"long",title:"Long run",distance:"13km",detail:"First double-digit long run post-UTA50. Easy throughout. Trail or mixed surface preferred.",purpose:"Time on feet. Rebuild long run habit."},
   ]},
   {week:4,phase:"base",volume:33,note:"4th run introduced. Two S&C sessions now standard. Practise fuelling on the long run.",sessions:[
-    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"6km",detail:"Easy Zone 2. S&C Session B later — at least 2 hours after the run.",purpose:"Aerobic base. Introduce lower body strength."},
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"6km",detail:"Easy Zone 2. S&C Session B later — at least 2 hours after the run.",purpose:"Aerobic base. Introduce lower body strength.",scDetail:SC_B},
     {day:"Tue",type:"strength",title:"S&C Session A",distance:null,detail:["Bodyweight squat — 3×12","Glute bridge — 3×15","Reverse lunge — 3×10 each leg","Dead bug — 3×8 each side","Calf raise — 3×20","Plank — 3×30 sec"],purpose:"Core stability and movement quality."},
     {day:"Wed",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2. Fourth run — keep genuinely easy. Legs may feel slightly heavy from Monday's S&C.",purpose:"Volume accumulation."},
     {day:"Thu",type:"run",title:"Easy run",distance:"5km",detail:"Short easy Zone 2. Rolling terrain welcome.",purpose:"Aerobic base."},
     {day:"Sat",type:"long",title:"Long run",distance:"14km",detail:"Easy effort. Take a gel or snack at 45 minutes — start practising fuelling habits now.",purpose:"Aerobic endurance. Establish fuelling habit."},
   ]},
   {week:5,phase:"base",volume:36,note:"Volume building. Introduce rolling terrain midweek if available.",sessions:[
-    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"7km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Aerobic base. Lower body strength."},
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"7km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Aerobic base. Lower body strength.",scDetail:SC_B},
     {day:"Tue",type:"strength",title:"S&C Session A",distance:null,detail:["Bodyweight squat — 3×12","Glute bridge — 3×15","Reverse lunge — 3×10 each leg","Dead bug — 3×8 each side","Calf raise — 3×20","Plank — 3×30 sec"],purpose:"Core stability."},
     {day:"Wed",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2. Introduce gentle rolling terrain — mild hills at easy effort.",purpose:"Aerobic volume. Begin trail specificity."},
     {day:"Thu",type:"run",title:"Easy run",distance:"5km",detail:"Short and easy. Focus on form: shoulders relaxed, light footfall.",purpose:"Aerobic base."},
     {day:"Sat",type:"long",title:"Long run",distance:"16km",detail:"Easy effort. Practise eating every 45–60 minutes. Note what sits well in your stomach.",purpose:"Aerobic endurance. Fuelling practice."},
   ]},
   {week:6,phase:"base",volume:40,note:"Quality introduced — hill reps. Aerobic effort up, walk recovery down.",sessions:[
-    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"7km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Aerobic base. Lower body strength."},
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"7km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Aerobic base. Lower body strength.",scDetail:SC_B},
     {day:"Tue",type:"strength",title:"S&C Session A",distance:null,detail:["Bodyweight squat — 3×12","Glute bridge — 3×15","Reverse lunge — 3×10 each leg","Dead bug — 3×8 each side","Calf raise — 3×20","Plank — 3×30 sec"],purpose:"Core stability. Final week of Session A."},
     {day:"Wed",type:"quality",title:"Hill reps",distance:"~9km",detail:["Warm up 2km easy.","Find a hill 200–400m long.","Run up at strong aerobic effort — about 80%. Hard but not sprinting.","Walk back down as full recovery.","6–8 reps total.","Cool down 2km easy."],purpose:"Introduce quality stimulus. Build hill-specific strength."},
     {day:"Thu",type:"run",title:"Easy run",distance:"6km",detail:"Easy Zone 2. Legs may feel heavy from hill reps — keep it genuinely easy.",purpose:"Active recovery after quality session."},
     {day:"Sat",type:"long",title:"Long run",distance:"18km",detail:"Easy effort. Hilly route preferred. Fuel every 45 minutes.",purpose:"Aerobic endurance. Trail specificity."},
   ]},
   {week:7,phase:"base",volume:32,cutback:true,note:"Cutback week. Absorb weeks 4–6. No quality session. Should feel comfortable.",sessions:[
-    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"8km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Maintain routine during cutback."},
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"8km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Maintain routine during cutback.",scDetail:SC_B},
     {day:"Tue",type:"strength",title:"S&C Session A",distance:null,detail:["Bodyweight squat — 3×12","Glute bridge — 3×15","Reverse lunge — 3×10 each leg","Dead bug — 3×8 each side","Calf raise — 3×20","Plank — 3×30 sec. Last week of Session A."],purpose:"Maintain S&C routine through cutback."},
     {day:"Thu",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2. Do you feel fitter? Lighter on your feet? Notice improvements since week 4.",purpose:"Active recovery. Check adaptation."},
     {day:"Sat",type:"long",title:"Long run",distance:"16km",detail:"Easy effort. Run a route you enjoy. Should feel comfortable and confidence-building.",purpose:"Easy endurance. Mental refresh."},
   ]},
   {week:8,phase:"base",volume:44,note:"Session C introduced. Hill reps resume — higher rep count.",sessions:[
-    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"7km",detail:"Easy Zone 2. From this week: Mon = Session B (lower body), Tue = Session C (core & upper).",purpose:"Aerobic base. Lower body strength."},
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"7km",detail:"Easy Zone 2. From this week: Mon = Session B (lower body), Tue = Session C (core & upper).",purpose:"Aerobic base. Lower body strength.",scDetail:SC_B},
     {day:"Tue",type:"strength",title:"S&C Session C",distance:null,detail:["Press-up — 3×15 (or to failure)","Renegade row — 3×10 each side","Pike press-up — 3×10","Hollow body hold — 3×20 sec","Bird dog — 3×10 each side","Side plank — 3×30 sec each side","Superman hold — 3×10. Rest 60 sec."],purpose:"Core strength and postural durability."},
     {day:"Wed",type:"quality",title:"Hill reps",distance:"~9km",detail:["Warm up 2km easy.","8–10 reps on a 200–400m hill at strong aerobic effort.","Walk back down full recovery.","Cool down 2km easy."],purpose:"Build hill strength and aerobic capacity."},
     {day:"Thu",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2. Recover from hill session.",purpose:"Active recovery and volume."},
     {day:"Sat",type:"long",title:"Long run",distance:"20km",detail:"Easy to moderate. Trail preferred. Fuel every 45 minutes. First 20km since UTA50 training.",purpose:"Aerobic endurance. Confidence milestone."},
   ]},
   {week:9,phase:"base",volume:48,note:"Strong uphill form — drive arms, shorten stride, lean from ankles.",sessions:[
-    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"9km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Aerobic base. Lower body strength."},
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"9km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Aerobic base. Lower body strength.",scDetail:SC_B},
     {day:"Tue",type:"strength",title:"S&C Session C",distance:null,detail:["Press-up — 3×15","Renegade row — 3×10 each side","Pike press-up — 3×10","Hollow body hold — 3×20–25 sec","Bird dog — 3×10 each side","Side plank — 3×30–35 sec each side","Superman hold — 3×10"],purpose:"Core and upper body strength."},
     {day:"Wed",type:"quality",title:"Hill reps",distance:"~10km",detail:["Warm up 2km easy.","10 reps on a 300–400m hill.","Drive arms forward, shorten stride, lean from ankles — not waist.","Walk back down full recovery.","Cool down 2km easy."],purpose:"Hill strength and trail-specific fitness."},
     {day:"Thu",type:"run",title:"Easy run",distance:"7km",detail:"Easy Zone 2. Active recovery.",purpose:"Active recovery and volume."},
     {day:"Sat",type:"long",title:"Long run",distance:"22km",detail:"Easy to moderate. Fuel and hydrate well. Focus on finishing strong, not fast.",purpose:"Aerobic endurance. Build confidence."},
   ]},
   {week:10,phase:"base",volume:52,note:"Final base week. Mix short fast + longer aerobic hill efforts.",sessions:[
-    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"9km",detail:"Easy Zone 2. S&C Session B later. Final base building week.",purpose:"Aerobic base. Lower body strength."},
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"9km",detail:"Easy Zone 2. S&C Session B later. Final base building week.",purpose:"Aerobic base. Lower body strength.",scDetail:SC_B},
     {day:"Tue",type:"strength",title:"S&C Session C",distance:null,detail:["Press-up — 3×15","Renegade row — 3×10 each side","Pike press-up — 3×10","Hollow body hold — 3×25 sec","Bird dog — 3×10 each side","Side plank — 3×35 sec each side","Superman hold — 3×10"],purpose:"Core and upper body strength."},
     {day:"Wed",type:"quality",title:"Hill reps — mixed",distance:"~11km",detail:["Warm up 2km easy.","10–12 reps — alternate shorter (200m) fast reps and longer (400m) aerobic efforts.","Walk recovery between all reps.","Cool down 2km easy."],purpose:"Build speed and aerobic hill strength."},
     {day:"Thu",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2.",purpose:"Active recovery and volume."},
     {day:"Sat",type:"long",title:"Long run",distance:"24km",detail:"Moderate effort on trail. Confidence long run — finish feeling you had more in the tank. Fuel every 45 minutes.",purpose:"Aerobic endurance. Confidence ahead of Phase 3."},
   ]},
   {week:11,phase:"build",volume:56,note:"Back-to-back runs introduced. Sunday easy after Saturday long.",sessions:[
-    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"8km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Aerobic base. Lower body strength."},
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"8km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Aerobic base. Lower body strength.",scDetail:SC_B},
     {day:"Tue",type:"strength",title:"S&C Session C",distance:null,detail:["Press-up — 3×15","Renegade row — 3×10 each side","Pike press-up — 3×10","Hollow body hold — 3×25 sec","Bird dog — 3×10 each side","Side plank — 3×35 sec each side","Superman hold — 3×10"],purpose:"Core and upper body strength."},
     {day:"Wed",type:"quality",title:"Hill efforts",distance:"~9km",detail:["Warm up 2km easy.","6 × 600m hill efforts — threshold feel, not sprint.","Walk or easy jog recovery.","Cool down 2km easy."],purpose:"Longer hill efforts. Build threshold capacity."},
     {day:"Thu",type:"run",title:"Easy run",distance:"7km",detail:"Easy Zone 2. Keep relaxed — Saturday is a big day.",purpose:"Active recovery."},
@@ -496,7 +505,7 @@ const WEEKS = [
     {day:"Sun",type:"run",title:"Back-to-back easy",distance:"5km",detail:"Very easy recovery run. Training the body to run on tired legs — a key ultra skill.",purpose:"Back-to-back conditioning."},
   ]},
   {week:12,phase:"build",volume:59,note:"First flat tempo session. Alternating with hill efforts from here.",sessions:[
-    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"7km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Aerobic base. Lower body strength."},
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"7km",detail:"Easy Zone 2. S&C Session B later.",purpose:"Aerobic base. Lower body strength.",scDetail:SC_B},
     {day:"Tue",type:"strength",title:"S&C Session C",distance:null,detail:["Press-up — 3×15","Renegade row — 3×10 each side","Pike press-up — 3×10","Hollow body hold — 3×25 sec","Bird dog — 3×10 each side","Side plank — 3×40 sec each side","Superman hold — 3×10"],purpose:"Core and upper body strength."},
     {day:"Wed",type:"quality",title:"Flat tempo",distance:"~10km",detail:["Warm up 2km easy.","25 minutes sustained tempo — comfortably hard. A word or two but not a conversation.","First flat speed session — builds road racing capacity.","Cool down 2km easy."],purpose:"Build flat speed and lactate threshold."},
     {day:"Thu",type:"run",title:"Easy run",distance:"6km",detail:"Easy Zone 2. Short recovery — Saturday is 30km.",purpose:"Active recovery."},
@@ -504,7 +513,7 @@ const WEEKS = [
     {day:"Sun",type:"run",title:"Back-to-back easy",distance:"6km",detail:"Very easy the day after 30km. This will feel hard — that's intentional. Walk if needed.",purpose:"Back-to-back ultra conditioning."},
   ]},
   {week:13,phase:"build",volume:52,cutback:true,note:"Cutback week. Last 2-session S&C week. Light reps only.",sessions:[
-    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"8km",detail:"Easy Zone 2. S&C Session B later. Last week with two S&C sessions.",purpose:"Maintain routine during cutback."},
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"8km",detail:"Easy Zone 2. S&C Session B later. Last week with two S&C sessions.",purpose:"Maintain routine during cutback.",scDetail:SC_B},
     {day:"Tue",type:"strength",title:"S&C Session C — final",distance:null,detail:["Press-up — 3×15","Renegade row — 3×10 each side","Pike press-up — 3×10","Hollow body hold — 3×25 sec","Bird dog — 3×10 each side","Side plank — 3×40 sec each side","Superman hold — 3×10. S&C drops to 1x from week 14."],purpose:"Final two-session S&C week."},
     {day:"Wed",type:"quality",title:"Light hill reps",distance:"~9km",detail:["Warm up 2km easy.","6 × 400m hill reps at aerobic effort.","Walk recovery.","Cool down 2km easy. Don't push hard."],purpose:"Maintain quality without deep fatigue."},
     {day:"Thu",type:"run",title:"Easy run",distance:"8km",detail:"Easy Zone 2. Absorb weeks 11–12.",purpose:"Active recovery. Consolidate adaptations."},
@@ -512,14 +521,14 @@ const WEEKS = [
     {day:"Sun",type:"run",title:"Back-to-back easy",distance:"7km",detail:"Very easy. Relaxed and enjoyable.",purpose:"Back-to-back habit."},
   ]},
   {week:14,phase:"build",volume:62,note:"S&C drops to 1x/week. Trail tempo introduced.",sessions:[
-    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"8km",detail:"Easy Zone 2. S&C Monday only from here — no Tuesday session.",purpose:"Aerobic base. Lower body strength (1x/week)."},
+    {day:"Mon",type:"run",title:"Easy run + S&C B",distance:"8km",detail:"Easy Zone 2. S&C Monday only from here — no Tuesday session.",purpose:"Aerobic base. Lower body strength (1x/week).",scDetail:SC_B},
     {day:"Wed",type:"quality",title:"Trail tempo",distance:"~10km",detail:["Warm up 2km easy on trail.","30 minutes sustained trail tempo — threshold feel on hilly terrain.","More race-specific than flat — terrain variation mirrors the race.","Cool down 2km easy."],purpose:"Race-specific threshold work."},
     {day:"Thu",type:"run",title:"Easy run",distance:"6km",detail:"Easy Zone 2. Short recovery before big weekend.",purpose:"Active recovery."},
     {day:"Sat",type:"long",title:"Long run",distance:"32km",detail:"Second 30km+ long run. Moderate effort. Fuel every 35–40 minutes. Practice exact race-day nutrition strategy.",purpose:"Peak race-specific conditioning."},
     {day:"Sun",type:"run",title:"Back-to-back easy",distance:"6km",detail:"Very easy. Walk sections if needed.",purpose:"Ultra back-to-back conditioning."},
   ]},
   {week:15,phase:"build",volume:65,peak:true,note:"Peak week. Everything built to this. Race conditions Saturday where possible.",sessions:[
-    {day:"Mon",type:"run",title:"Easy run + S&C B (final)",distance:"7km",detail:"Easy Zone 2. Final S&C session of the plan.",purpose:"Aerobic base. Final strength session."},
+    {day:"Mon",type:"run",title:"Easy run + S&C B (final)",distance:"7km",detail:"Easy Zone 2. Final S&C session of the plan.",purpose:"Aerobic base. Final strength session.",scDetail:SC_B},
     {day:"Wed",type:"quality",title:"Race pace effort",distance:"~9km",detail:["Warm up 2km easy.","25 minutes at target race effort — easy-to-moderate for a 47-miler.","Goal is confidence and feel, not speed.","Cool down 2km easy."],purpose:"Race feel and confidence."},
     {day:"Thu",type:"run",title:"Easy run",distance:"7km",detail:"Easy Zone 2. Keep legs fresh — Saturday is the biggest training day.",purpose:"Active recovery. Prepare for peak long run."},
     {day:"Sat",type:"long",title:"Peak long run",distance:"37km",detail:"The biggest training run of the plan. Trail and hilly — race conditions where possible. Fuel every 35 minutes. Walk steep climbs. Manage effort carefully in the first half.",purpose:"Peak race-specific conditioning. Most important session of the plan."},
@@ -970,6 +979,24 @@ function openDrawer(wIdx,si,e){
   } else {
     detailEl.innerHTML=`<div class="drawer-detail">${s.detail||''}</div>`;
   }
+
+  // S&C section for combined run+S&C sessions
+  const scEl=document.getElementById('d-sc-detail');
+  if(s.scDetail){
+    const scCol='#7b8fd4';
+    scEl.style.display='block';
+    scEl.innerHTML=`
+      <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
+      <div class="drawer-section-label" style="color:${scCol}">💪 S&C Session B — Exercises</div>
+      <div class="drawer-steps">${s.scDetail.map((step,i)=>`
+        <div class="drawer-step">
+          <div class="drawer-step-num" style="color:${scCol}">${i+1}</div>
+          <div class="drawer-step-text">${step}</div>
+        </div>`).join('')}
+      </div>`;
+  } else {
+    scEl.style.display='none';
+  }
   const pEl=document.getElementById('d-purpose');
   if(s.purpose){pEl.textContent=s.purpose;pEl.style.borderColor=col;pEl.style.display='block';}
   else{pEl.style.display='none';}
@@ -1221,7 +1248,7 @@ document.addEventListener('touchstart',e=>{tsX=e.touches[0].clientX;tsY=e.touche
 document.addEventListener('touchend',e=>{
   if(document.getElementById('drawer').classList.contains('open')) return;
   if(document.getElementById('week-menu-panel').classList.contains('open')) return;
-  if(!document.getElementById('view-plan').style.display!=='none') return;
+  if(document.getElementById('view-plan').style.display==='none') return;
   const dx=e.changedTouches[0].clientX-tsX;
   const dy=e.changedTouches[0].clientY-tsY;
   if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40) navigate(dx<0?1:-1);
