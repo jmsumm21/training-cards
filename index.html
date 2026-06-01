@@ -223,6 +223,8 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 .bar-wk{font-family:'DM Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:0.04em;}
 .bar-tooltip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--card3);border:1px solid var(--border2);border-radius:6px;padding:4px 8px;font-family:'DM Mono',monospace;font-size:10px;color:var(--text);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity 0.15s;z-index:10;}
 .bar-fill:hover .bar-tooltip{opacity:1;}
+.bar-fill:hover{filter:brightness(1.15);}
+.bar-col:hover .bar-wk{color:var(--text2);}
 .phase-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
 .legend-item{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:0.05em;}
 .legend-dot{width:8px;height:8px;border-radius:2px;}
@@ -418,7 +420,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
   <div class="full-inner">
     <div class="fp-title">Stretches</div>
     <div class="fp-sub">Four routines · Tap to expand</div>
-    <div class="stretch-intro">All stretches are static holds unless noted. Never stretch cold — do these post-run or after 5 minutes of easy movement. Hold each stretch at a mild tension, never pain.</div>
+    <div class="stretch-intro">All static stretches are post-run only. The pre-run routine uses dynamic movements only — never hold static stretches before running. Do these in order and move smoothly throughout.</div>
     <div id="stretch-content"></div>
   </div>
 </div>
@@ -537,7 +539,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 // DATA
 // ═══════════════════════════
 const RACE_DATE  = new Date('2026-09-19');
-const WEEK_START = new Date('2026-05-18');
+const WEEK_START = '2026-05-18'; // string — parsed as local time below
 
 // ═══════════════════════════
 // S&C EXERCISE LISTS
@@ -677,6 +679,18 @@ const WEEKS = [
 // ═══════════════════════════
 const STRETCHES = [
   {
+    id:"prerun", icon:"🌅", title:"Pre-Run Routine", sub:"Before any run · 5 min",
+    intro:"All dynamic movements — no static holds. The goal is to raise tissue temperature, wake up the joints, and get the neuromuscular system firing before you run. Do these in order, move smoothly throughout.",
+    items:[
+      {name:"Leg swings — forward/back",duration:"10 reps each leg",cue:"Stand side-on to a wall, one hand for balance. Swing one leg forward and back in a controlled arc, gradually increasing range with each rep. Loosens the hip flexors and hamstrings dynamically. Then repeat on the other leg."},
+      {name:"Leg swings — side to side",duration:"10 reps each leg",cue:"Face the wall with both hands for balance. Swing one leg across the body and out to the side, increasing range gradually. Opens the hip in the frontal plane — particularly useful before trail running.",},
+      {name:"Hip circles",duration:"10 reps each direction",cue:"Feet shoulder-width, hands on hips. Draw large slow circles with the pelvis. 10 clockwise, 10 anti-clockwise. Keep the upper body relatively still. Mobilises the hip joint through full rotation."},
+      {name:"Walking lunges with rotation",duration:"8 reps each side",cue:"Step forward into a lunge, then rotate your torso toward the front leg and reach the opposite arm forward. Step through and repeat on the other side. Combines hip flexor opening with thoracic rotation — hits multiple areas in one movement."},
+      {name:"High knees — slow",duration:"20 reps",cue:"Walk or jog slowly, driving each knee up toward your chest with an exaggerated motion. Focus on hip flexor activation and keeping the core engaged. Not a sprint drill — deliberate and controlled."},
+      {name:"Ankle circles + calf raises",duration:"10 circles each ankle, 10 raises",cue:"Lift one foot, rotate the ankle slowly in both directions. Then stand on both feet and do 10 slow calf raises — all the way up, all the way down. Simple but important for trail running ankle preparation."},
+    ]
+  },
+  {
     id:"easy", icon:"🏃", title:"Easy Run Routine", sub:"Post-run · 8–10 min",
     intro:"A quick maintenance routine for easy run days. Holds should feel mild — this is upkeep, not deep tissue work.",
     items:[
@@ -788,7 +802,7 @@ function toggleManual(wIdx,sIdx){ const c=getCompleted(),k=`${wIdx}_${sIdx}`;c[k
 // ═══════════════════════════
 // DATE HELPERS
 // ═══════════════════════════
-function weekStartDate(wIdx){ const d=new Date(WEEK_START);d.setDate(d.getDate()+wIdx*7);return d; }
+function weekStartDate(wIdx){ const [y,m,d]=WEEK_START.split('-').map(Number);const base=new Date(y,m-1,d);base.setDate(base.getDate()+wIdx*7);return base; }
 function formatWeekDate(wIdx){ return weekStartDate(wIdx).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}); }
 function formatWeekShort(wIdx){ return weekStartDate(wIdx).toLocaleDateString('en-GB',{day:'numeric',month:'short'}); }
 
@@ -1225,10 +1239,10 @@ function renderSummary(){
     const isProj=i>cw;
     const classes=`bar-fill${isCur?' bar-current':''}${isProj?' bar-projected':''}`;
     bars+=`<div class="bar-col">
-      <div class="${classes}" style="height:${h}px;background:${pc};${isProj?'border:1px dashed '+pc:''}">
+      <div class="${classes}" style="height:${h}px;background:${pc};${isProj?'border:1px dashed '+pc:''}" onclick="jumpTo(${i})">
         <div class="bar-tooltip">${w.volume}km · W${w.week}</div>
       </div>
-      <div class="bar-wk">${w.week}</div>
+      <div class="bar-wk" style="cursor:pointer" onclick="jumpTo(${i})">${w.week}</div>
     </div>`;
   });
   document.getElementById('bar-chart').innerHTML=bars;
